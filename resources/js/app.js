@@ -6,8 +6,9 @@ import { createInertiaApp } from '@inertiajs/vue3'
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers'
 import { createApp, h } from 'vue'
 
-import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m'
+import { ZiggyVue } from 'ziggy-js'
 import { Ziggy } from './ziggy'
+
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel'
 console.log('Booting Inertia app', import.meta.env.MODE)
