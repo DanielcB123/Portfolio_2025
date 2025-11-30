@@ -54,7 +54,7 @@ onMounted(() => {
 })
 
 const submit = () => {
-  form.post(route('login'), {
+  form.post('login', {
     onSuccess: () => {
       const user = page.props.auth?.user
       if (user && user.api_key) {
