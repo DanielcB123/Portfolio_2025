@@ -23,6 +23,10 @@ FROM richarvey/nginx-php-fpm:3.1.6
 # Laravel app lives here in this base image
 WORKDIR /var/www/html
 
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/database
+
+USER www-data
+
 # Copy full app code into container
 COPY . .
 
