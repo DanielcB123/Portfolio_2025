@@ -36,8 +36,18 @@ RUN mkdir -p storage bootstrap/cache database \
     && chown -R www-data:www-data storage bootstrap/cache database \
     && chmod -R u+rwX,g+rwX storage bootstrap/cache database
 
-# Image config
-ENV SKIP_COMPOSER=0
+# Composer config
+ENV COMPOSER_ALLOW_SUPERUSER=1
+
+# Install PHP dependencies inside the image
+RUN composer install \
+    --no-dev \
+    --prefer-dist \
+    --no-interaction \
+    --optimize-autoloader
+
+# Image config - skip composer in /start.sh since we already ran it
+ENV SKIP_COMPOSER=1
 ENV WEBROOT=/var/www/html/public
 ENV PHP_ERRORS_STDERR=1
 ENV RUN_SCRIPTS=1
@@ -48,11 +58,9 @@ ENV APP_ENV=production
 ENV APP_DEBUG=false
 ENV LOG_CHANNEL=stderr
 
-# Allow composer to run as root
-ENV COMPOSER_ALLOW_SUPERUSER=1
-
+# Copy entrypoint and make it executable
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-# Start PHP-FPM + Nginx (base image entrypoint)
+# Start: run migrations + seeders, then hand off to base start.sh
 ENTRYPOINT ["/entrypoint.sh"]
