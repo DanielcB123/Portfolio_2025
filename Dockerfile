@@ -23,15 +23,18 @@ FROM richarvey/nginx-php-fpm:3.1.6
 # Laravel app lives here in this base image
 WORKDIR /var/www/html
 
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/database
-
-USER www-data
-
 # Copy full app code into container
 COPY . .
 
 # Overwrite the build folder with the freshly compiled assets
 COPY --from=assets /app/public/build ./public/build
+
+# Ensure Laravel writeable directories are owned by php-fpm user
+# and that SQLite can be written
+RUN mkdir -p storage bootstrap/cache database \
+    && touch database/database.sqlite \
+    && chown -R www-data:www-data storage bootstrap/cache database \
+    && chmod -R u+rwX,g+rwX storage bootstrap/cache database
 
 # Image config
 ENV SKIP_COMPOSER=0
