@@ -21,6 +21,7 @@
     "dependencies": {
         "canvas-confetti": "^1.9.4",
         "three": "^0.181.2",
-        "vue3-toastify": "^0.2.8"
+        "vue3-toastify": "^0.2.8",
+        "ziggy-js": "^2.6.0"
     }
 }
