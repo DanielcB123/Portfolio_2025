@@ -245,7 +245,7 @@ const submit = () => {
             <p>
               Already have an account?
               <Link
-                :href="route('login')"
+                href="/login"
                 class="font-medium text-emerald-600 hover:text-emerald-500 dark:text-emerald-300 dark:hover:text-emerald-200"
               >
                 Log in
