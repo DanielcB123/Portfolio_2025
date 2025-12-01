@@ -408,7 +408,7 @@ onBeforeUnmount(() => {
       <!-- Game button -->
       <Link
         href="/orbital-dodge"
-        class="inline-flex items-center gap-2 hover:translate-y-0.5 rounded-full border border-slate-300/80 bg-white/80 px-3 py-1.5 text-xs text-slate-900 shadow-lg transition hover:border-blue-400/80 hover:bg-white hover:shadow-blue-500/20 dark:border-slate-700/80 dark:bg-slate-900/70 dark:text-slate-100 dark:hover:border-blue-400/80 dark:hover:bg-slate-900 dark:hover:shadow-blue-500/30"
+        class="inline-flex hidden sm:flex items-center gap-2 hover:translate-y-0.5 rounded-full border border-slate-300/80 bg-white/80 px-3 py-1.5 text-xs text-slate-900 shadow-lg transition hover:border-blue-400/80 hover:bg-white hover:shadow-blue-500/20 dark:border-slate-700/80 dark:bg-slate-900/70 dark:text-slate-100 dark:hover:border-blue-400/80 dark:hover:bg-slate-900 dark:hover:shadow-blue-500/30"
       >
         Orbital Dodge Game
       </Link>
@@ -434,7 +434,7 @@ onBeforeUnmount(() => {
       <!-- Game button -->
       <Link
         href="/orbital-dodge"
-        class="inline-flex items-center hover:translate-y-0.5 gap-2 rounded-full border border-slate-300/80 bg-white/80 px-3 py-1.5 text-xs text-slate-900 shadow-lg transition hover:border-blue-400/80 hover:bg-white hover:shadow-blue-500/20 dark:border-slate-700/80 dark:bg-slate-900/70 dark:text-slate-100 dark:hover:border-blue-400/80 dark:hover:bg-slate-900 dark:hover:shadow-blue-500/30"
+        class="inline-flex items-center hidden sm:flex hover:translate-y-0.5 gap-2 rounded-full border border-slate-300/80 bg-white/80 px-3 py-1.5 text-xs text-slate-900 shadow-lg transition hover:border-blue-400/80 hover:bg-white hover:shadow-blue-500/20 dark:border-slate-700/80 dark:bg-slate-900/70 dark:text-slate-100 dark:hover:border-blue-400/80 dark:hover:bg-slate-900 dark:hover:shadow-blue-500/30"
       >
         Orbital Dodge Game
       </Link>
