@@ -37,13 +37,6 @@ Route::get('/orbital-dodge', function () {
 
 Route::get('/api/leaderboard/orbital-dodge', [GameScoreController::class, 'index']);
 Route::post('/api/leaderboard/orbital-dodge', [GameScoreController::class, 'store']);
-//debug remove
-Route::get('/debug-app-url', function () {
-    return [
-        'app_url'     => config('app.url'),
-        'env_app_url' => env('APP_URL'),
-    ];
-});
 
 // Public Incident Command Center dashboard (read only)
 Route::get('/incident-command', [IncidentDashboardController::class, 'index'])

@@ -245,7 +245,7 @@ const submit = () => {
             <p>
               Need an account?
               <Link
-                :href="route('register')"
+                href="/register"
                 class="font-medium text-emerald-600 hover:text-emerald-500 dark:text-emerald-300 dark:hover:text-emerald-200"
               >
                 Create one for the TaskFlow demo
