@@ -21,9 +21,8 @@ createInertiaApp({
       import.meta.glob('./Pages/**/*.vue'),
     ),
   setup({ el, App, props, plugin }) {
-    const vueApp = createApp({ render: () => h(App, props) })
-      .use(plugin)
-      .use(ZiggyVue, Ziggy)
+        const vueApp = createApp({ render: () => h(App, props) })
+        .use(plugin)
 
     vueApp.mount(el)
   },
