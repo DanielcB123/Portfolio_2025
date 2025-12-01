@@ -50,8 +50,8 @@ const arenaHeight = 380;
 
 // player
 const player = reactive({
-  x: arenaWidth / 2,
-  y: arenaHeight / 2,
+  x: arenaWidth.value / 2,
+  y: arenaHeight.value / 2,
   radius: 12,
   speed: 220,
 });
@@ -101,6 +101,28 @@ function createExplosion(x, y, baseRadius = 12) {
   });
 }
 
+function updateArenaSize() {
+  if (typeof window === 'undefined') return;
+
+  // Try to keep it within the viewport, accounting for padding
+  const padding = 64; // rough total horizontal padding from layout
+  const maxSize = 380;
+  const minSize = 260;
+
+  const viewportWidth = window.innerWidth;
+  const available = viewportWidth - padding;
+
+  const size = Math.max(minSize, Math.min(maxSize, available));
+
+  arenaWidth.value = size;
+  arenaHeight.value = size;
+
+  // Clamp player inside new bounds
+  const r = player.radius;
+  if (player.x > arenaWidth.value - r) player.x = arenaWidth.value - r;
+  if (player.y > arenaHeight.value - r) player.y = arenaHeight.value - r;
+}
+
 async function fetchLeaderboard() {
   try {
     const { data } = await axios.get('/api/leaderboard/orbital-dodge');
@@ -109,6 +131,26 @@ async function fetchLeaderboard() {
     console.error('Failed to load leaderboard', e);
   }
 }
+
+function startMove(dir) {
+  // on first touch, if idle, start the game
+  if (!isRunning.value && !isGameOver.value) {
+    startGame();
+  }
+
+  if (dir === 'left') keys.left = true;
+  if (dir === 'right') keys.right = true;
+  if (dir === 'up') keys.up = true;
+  if (dir === 'down') keys.down = true;
+}
+
+function stopMove(dir) {
+  if (dir === 'left') keys.left = false;
+  if (dir === 'right') keys.right = false;
+  if (dir === 'up') keys.up = false;
+  if (dir === 'down') keys.down = false;
+}
+
 
 function qualifiesForTopTen(newScore) {
   if (newScore <= 0) return false;
@@ -183,8 +225,8 @@ function activateNovaMode() {
 
 // game setup / reset
 function resetGameState() {
-  player.x = arenaWidth / 2;
-  player.y = arenaHeight / 2;
+  player.x = arenaWidth.value / 2;
+  player.y = arenaHeight.value / 2;
 
   enemies.value = [];
   stars.value = [];
@@ -217,18 +259,19 @@ function spawnEnemy() {
   const margin = 10;
 
   if (side === 0) {
-    x = margin + Math.random() * (arenaWidth - margin * 2);
+    x = margin + Math.random() * (arenaWidth.value - margin * 2);
     y = -margin;
   } else if (side === 1) {
-    x = arenaWidth + margin;
-    y = margin + Math.random() * (arenaHeight - margin * 2);
+    x = arenaWidth.value + margin;
+    y = margin + Math.random() * (arenaHeight.value - margin * 2);
   } else if (side === 2) {
-    x = margin + Math.random() * (arenaWidth - margin * 2);
-    y = arenaHeight + margin;
+    x = margin + Math.random() * (arenaWidth.value - margin * 2);
+    y = arenaHeight.value + margin;
   } else {
     x = -margin;
-    y = margin + Math.random() * (arenaHeight - margin * 2);
+    y = margin + Math.random() * (arenaHeight.value - margin * 2);
   }
+
 
   const radius = 8 + Math.random() * 4 + enemySizeBoost;
 
@@ -256,8 +299,9 @@ function spawnStar() {
   const margin = 30;
   const radius = 10 + Math.random() * 3;
 
-  const x = margin + Math.random() * (arenaWidth - margin * 2);
-  const y = margin + Math.random() * (arenaHeight - margin * 2);
+  const x = margin + Math.random() * (arenaWidth.value - margin * 2);
+  const y = margin + Math.random() * (arenaHeight.value - margin * 2);
+
 
   stars.value.push({
     id: nextStarId++,
@@ -309,9 +353,9 @@ function update(delta) {
 
     const r = player.radius;
     if (player.x < r) player.x = r;
-    if (player.x > arenaWidth - r) player.x = arenaWidth - r;
+    if (player.x > arenaWidth.value - r) player.x = arenaWidth.value - r;
     if (player.y < r) player.y = r;
-    if (player.y > arenaHeight - r) player.y = arenaHeight - r;
+    if (player.y > arenaHeight.value - r) player.y = arenaHeight.value - r;
   }
 
   // move enemies
@@ -324,9 +368,9 @@ function update(delta) {
   enemies.value = enemies.value.filter(
     (e) =>
       e.x > -80 &&
-      e.x < arenaWidth + 80 &&
+      e.x < arenaWidth.value + 80 &&
       e.y > -80 &&
-      e.y < arenaHeight + 80
+      e.y < arenaHeight.value + 80
   );
 
   // spawn enemies
@@ -498,8 +542,6 @@ function handleKeyDown(e) {
   if (e.code === 'ArrowLeft' || e.code === 'KeyA') keys.left = true;
   if (e.code === 'ArrowRight' || e.code === 'KeyD') keys.right = true;
   if (e.code === 'ArrowUp' || e.code === 'KeyW') keys.up = true;
-  if (e.code === 'ArrowDown' || e.code === 'KeyS') keys.down = false ? true : true; // will override below
-  // actually handle down correctly
   if (e.code === 'ArrowDown' || e.code === 'KeyS') keys.down = true;
 
   if (e.code === 'Enter' && !isRunning.value) {
@@ -507,6 +549,7 @@ function handleKeyDown(e) {
     startGame();
   }
 }
+
 
 function handleKeyUp(e) {
   if (e.code === 'ArrowLeft' || e.code === 'KeyA') keys.left = false;
@@ -523,6 +566,7 @@ function handleArenaClick() {
 
 onMounted(async () => {
   loadStorage();
+  updateArenaSize();     // <–– add this before reset
   resetGameState();
 
   if (typeof window !== 'undefined') {
@@ -535,6 +579,8 @@ onMounted(async () => {
         window.matchMedia('(prefers-color-scheme: dark)').matches;
       applyTheme(prefersDark ? 'dark' : 'light');
     }
+
+    window.addEventListener('resize', updateArenaSize);  // <–– add
   }
 
   await fetchLeaderboard();
@@ -544,11 +590,16 @@ onMounted(async () => {
 });
 
 
+
 onBeforeUnmount(() => {
   window.removeEventListener('keydown', handleKeyDown);
   window.removeEventListener('keyup', handleKeyUp);
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('resize', updateArenaSize);
+  }
   if (rafId) window.cancelAnimationFrame(rafId);
 });
+
 </script>
 
 <template>
@@ -674,7 +725,7 @@ onBeforeUnmount(() => {
               <!-- Arena -->
               <div
                 class="relative overflow-hidden rounded-xl border border-slate-200 bg-slate-200/95 dark:border-slate-800 dark:bg-slate-950/90 cursor-pointer"
-                :style="{ width: arenaWidth + 'px', height: arenaHeight + 'px' }"
+                style="{ width: arenaWidth + 'px', height: arenaHeight + 'px' }"
                 @click="handleArenaClick"
               >
                 <!-- background grid -->
@@ -794,6 +845,67 @@ onBeforeUnmount(() => {
                 </div>
               </div>
 
+              <!-- Mobile touch controls -->
+              <div class="mt-4 flex flex-col items-center gap-2 sm:hidden">
+                <div class="grid grid-cols-3 gap-2">
+                  <!-- top row -->
+                  <div></div>
+                  <button
+                    type="button"
+                    class="flex h-9 w-9 items-center justify-center rounded-full border border-slate-300 bg-white/90 text-xs font-semibold text-slate-700 shadow-sm active:scale-95 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                    @pointerdown.prevent="startMove('up')"
+                    @pointerup.prevent="stopMove('up')"
+                    @pointercancel.prevent="stopMove('up')"
+                    @pointerleave.prevent="stopMove('up')"
+                  >
+                    ↑
+                  </button>
+                  <div></div>
+
+                  <!-- middle row -->
+                  <button
+                    type="button"
+                    class="flex h-9 w-9 items-center justify-center rounded-full border border-slate-300 bg-white/90 text-xs font-semibold text-slate-700 shadow-sm active:scale-95 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                    @pointerdown.prevent="startMove('left')"
+                    @pointerup.prevent="stopMove('left')"
+                    @pointercancel.prevent="stopMove('left')"
+                    @pointerleave.prevent="stopMove('left')"
+                  >
+                    ←
+                  </button>
+
+                  <div
+                    class="flex items-center justify-center text-[10px] text-slate-500 dark:text-slate-400"
+                  >
+                    Hold to move
+                  </div>
+
+                  <button
+                    type="button"
+                    class="flex h-9 w-9 items-center justify-center rounded-full border border-slate-300 bg-white/90 text-xs font-semibold text-slate-700 shadow-sm active:scale-95 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                    @pointerdown.prevent="startMove('right')"
+                    @pointerup.prevent="stopMove('right')"
+                    @pointercancel.prevent="stopMove('right')"
+                    @pointerleave.prevent="stopMove('right')"
+                  >
+                    →
+                  </button>
+
+                  <!-- bottom row -->
+                  <div></div>
+                  <button
+                    type="button"
+                    class="flex h-9 w-9 items-center justify-center rounded-full border border-slate-300 bg-white/90 text-xs font-semibold text-slate-700 shadow-sm active:scale-95 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                    @pointerdown.prevent="startMove('down')"
+                    @pointerup.prevent="stopMove('down')"
+                    @pointercancel.prevent="stopMove('down')"
+                    @pointerleave.prevent="stopMove('down')"
+                  >
+                    ↓
+                  </button>
+                  <div></div>
+                </div>
+              </div>
 
 
               <div class="mt-4 flex flex-wrap items-center justify-between gap-3 text-xs">
