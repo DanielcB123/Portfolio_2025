@@ -1,6 +1,7 @@
 <script setup>
 import { Link, usePage } from '@inertiajs/vue3';
 import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { useVerticalResize } from '@/Composables/useVerticalResize';
 
 const page = usePage();
 const user = page.props.auth?.user;
@@ -260,6 +261,17 @@ const activeCodeTab = ref(codeTabs[0].id);
 const typedSnippet = ref('');
 const cursorVisible = ref(true);
 
+const {
+  height: codeShellHeight,
+  start: startCodeShellResize,
+  load: loadCodeShellHeight,
+} = useVerticalResize({
+  storageKey: 'wire-features-code-height',
+  defaultHeight: 225,
+  minHeight: 180,
+  maxHeight: 560,
+});
+
 let typeTimer = null;
 let cursorTimer = null;
 let typeIndex = 0;
@@ -299,6 +311,8 @@ const selectCodeTab = (tabId) => {
 };
 
 onMounted(() => {
+  loadCodeShellHeight();
+
   // Initialize theme from localStorage or system preference
   if (typeof window !== 'undefined') {
     const stored = window.localStorage.getItem('theme');
@@ -892,6 +906,7 @@ onBeforeUnmount(() => {
 
                 <div
                 class="code-shell border border-slate-200 bg-slate-50 text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-50"
+                :style="{ height: `${codeShellHeight}px` }"
                 >
                     <div
                         class="code-shell-header border-b border-slate-200 bg-slate-100 dark:border-slate-700 dark:bg-slate-900"
@@ -940,6 +955,18 @@ onBeforeUnmount(() => {
                     >
                         <code>{{ typedSnippet }}<span v-if="cursorVisible" class="code-cursor">▍</span></code>
                     </pre>
+
+                    <div
+                      class="code-shell-resize-handle"
+                      role="separator"
+                      aria-orientation="horizontal"
+                      aria-label="Resize code panel"
+                      title="Drag to resize"
+                      @mousedown.prevent="startCodeShellResize"
+                      @touchstart.prevent="startCodeShellResize"
+                    >
+                      <span class="code-shell-resize-grip" aria-hidden="true" />
+                    </div>
                 </div>
 
                 </div>
@@ -1261,7 +1288,42 @@ onBeforeUnmount(() => {
 
   display: flex;
   flex-direction: column;
-  height: 225px;
+}
+
+.code-shell-resize-handle {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 0.75rem;
+  cursor: ns-resize;
+  border-top: 1px solid rgba(148, 163, 184, 0.22);
+  background: rgba(148, 163, 184, 0.06);
+  transition: background 0.15s ease;
+}
+
+.code-shell-resize-handle:hover {
+  background: rgba(16, 185, 129, 0.12);
+}
+
+.code-shell-resize-grip {
+  width: 2.25rem;
+  height: 0.2rem;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.45);
+}
+
+:deep(.dark) .code-shell-resize-handle {
+  border-top-color: rgba(71, 85, 105, 0.65);
+  background: rgba(15, 23, 42, 0.55);
+}
+
+:deep(.dark) .code-shell-resize-handle:hover {
+  background: rgba(16, 185, 129, 0.18);
+}
+
+:deep(.dark) .code-shell-resize-grip {
+  background: rgba(148, 163, 184, 0.55);
 }
 
 /* Header layout only */
