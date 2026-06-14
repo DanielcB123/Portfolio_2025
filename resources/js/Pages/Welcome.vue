@@ -9,6 +9,34 @@ const user = page.props.auth?.user;
 const theme = ref('dark');
 const aboutSection = ref(null)
 const aboutHighlight = ref(false)
+const wireFeaturesCard = ref(null)
+const wireFeaturesTrigger = ref(null)
+const wireFeaturesHighlighted = ref(false)
+
+const dismissWireFeaturesHighlight = (event) => {
+  if (!wireFeaturesHighlighted.value) return
+
+  const target = event.target
+  if (
+    wireFeaturesCard.value?.contains(target) ||
+    wireFeaturesTrigger.value?.contains(target)
+  ) {
+    return
+  }
+
+  wireFeaturesHighlighted.value = false
+}
+
+const scrollToWork = () => {
+  if (typeof window === 'undefined') return
+
+  wireFeaturesCard.value?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+
+  const isDesktop = window.matchMedia('(min-width: 1024px)').matches
+  if (!isDesktop) return
+
+  wireFeaturesHighlighted.value = true
+}
 
 const scrollToAbout = () => {
   if (typeof window === 'undefined') return
@@ -200,11 +228,14 @@ onMounted(() => {
   cursorTimer = window.setInterval(() => {
     cursorVisible.value = !cursorVisible.value;
   }, 550);
+
+  document.addEventListener('click', dismissWireFeaturesHighlight);
 });
 
 onBeforeUnmount(() => {
   if (typeTimer) window.clearInterval(typeTimer);
   if (cursorTimer) window.clearInterval(cursorTimer);
+  document.removeEventListener('click', dismissWireFeaturesHighlight);
 });
 </script>
 
@@ -236,61 +267,95 @@ onBeforeUnmount(() => {
     <!-- Content -->
     <div class="relative z-10 flex min-h-screen flex-col">
       <!-- Top nav / badge -->
-<header class="flex items-center justify-between px-6 pt-4 sm:px-10 sm:pt-5">
-  <div class="mx-auto flex w-full max-w-6xl items-center justify-between pt-2.5">
-    <!-- Left: name pill -->
-    <div
-      class="inline-flex items-center gap-3 rounded-full border border-slate-300/80 bg-white/80 px-4 py-1.5 shadow-lg shadow-blue-500/10 backdrop-blur dark:border-slate-700/70 dark:bg-slate-900/70"
-    >
-      <span
-        class="inline-flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-emerald-400 text-xs font-semibold text-slate-950"
-      >
-        DB
-      </span>
-      <div class="text-xs sm:text-sm leading-tight">
-        <div class="font-semibold tracking-wide text-slate-800 uppercase dark:text-slate-100">
-          Daniel Burgess
+<header class="px-4 pt-4 sm:px-10 sm:pt-5">
+  <div class="mx-auto w-full max-w-6xl pt-2.5">
+    <!-- Mobile header: compact single row -->
+    <div class="flex items-center justify-between gap-3 sm:hidden">
+      <div class="flex min-w-0 flex-1 items-center gap-2.5">
+        <span
+          class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-emerald-400 text-xs font-semibold text-slate-950"
+        >
+          DB
+        </span>
+        <div class="min-w-0 leading-tight">
+          <div class="truncate text-sm font-semibold tracking-wide text-slate-800 dark:text-slate-100">
+            Daniel Burgess
+          </div>
+          <div class="truncate text-[11px] text-slate-500 dark:text-slate-400">
+            Full stack engineer
+          </div>
         </div>
-        <div class="text-[11px] text-slate-500 dark:text-slate-300">
-          Full stack engineer building real world products
-        </div>
+      </div>
+
+      <div class="flex shrink-0 items-center gap-2">
+        <button
+          type="button"
+          aria-label="Toggle theme"
+          class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-300/80 bg-white/70 text-slate-700 shadow shadow-slate-200/60 backdrop-blur transition hover:border-emerald-400/80 dark:border-slate-700/70 dark:bg-slate-900/80 dark:text-slate-300"
+          @click="applyTheme(theme === 'dark' ? 'light' : 'dark')"
+        >
+          <span v-if="theme === 'dark'">☾</span>
+          <span v-else>☀</span>
+        </button>
+        <span
+          class="inline-flex h-2.5 w-2.5 rounded-full bg-emerald-400 shadow shadow-emerald-400/70"
+          title="Portfolio live"
+          aria-hidden="true"
+        />
       </div>
     </div>
 
-    <!-- Right: theme, availability, about -->
-    <div class="flex items-center gap-2 sm:gap-3">
-      <!-- Theme toggle -->
-      <button
-        type="button"
-        class="inline-flex items-center gap-2 rounded-full border border-slate-300/80 bg-white/70 px-3 py-1.5 text-[11px] text-slate-700 shadow shadow-slate-200/60 backdrop-blur transition hover:border-emerald-400/80 hover:text-emerald-600 dark:border-slate-700/70 dark:bg-slate-900/80 dark:text-slate-300 dark:shadow-slate-900/40 dark:hover:border-emerald-400/80 dark:hover:text-emerald-300"
-        @click="applyTheme(theme === 'dark' ? 'light' : 'dark')"
-      >
-        <span class="inline-flex h-5 w-5 items-center justify-center rounded-full bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-amber-300">
-          <span v-if="theme === 'dark'">☾</span>
-          <span v-else>☀</span>
-        </span>
-        <span class="hidden sm:inline">
-          <span v-if="theme === 'dark'">Dark mode</span>
-          <span v-else>Light mode</span>
-        </span>
-      </button>
-
-      <!-- Availability -->
+    <!-- Desktop header: full pill layout -->
+    <div class="hidden items-center justify-between sm:flex">
       <div
-        class="hidden sm:flex items-center gap-1 text-[11px] text-slate-500 dark:text-slate-300"
+        class="inline-flex items-center gap-3 rounded-full border border-slate-300/80 bg-white/80 px-4 py-1.5 shadow-lg shadow-blue-500/10 backdrop-blur dark:border-slate-700/70 dark:bg-slate-900/70"
       >
         <span
-          class="h-2 w-2 rounded-full bg-emerald-400 shadow shadow-emerald-400/70 animate-pulse"
-        ></span>
-        <span>Available for new opportunities</span>
+          class="inline-flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-emerald-400 text-xs font-semibold text-slate-950"
+        >
+          DB
+        </span>
+        <div class="text-xs sm:text-sm leading-tight">
+          <div class="font-semibold tracking-wide text-slate-800 uppercase dark:text-slate-100">
+            Daniel Burgess
+          </div>
+          <div class="text-[11px] text-slate-500 dark:text-slate-300">
+            Full stack engineer building real world products
+          </div>
+        </div>
       </div>
 
-      <!-- About pill -->
-      <div
-        class="inline-flex items-center gap-2 rounded-full border border-slate-300/70 bg-white/80 px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-slate-600 shadow-lg shadow-slate-200/70 dark:border-slate-700/70 dark:bg-slate-950/70 dark:text-slate-400 dark:shadow-slate-900/80"
-      >
-        <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
-        <span>Portfolio</span>
+      <div class="flex items-center gap-2 sm:gap-3">
+        <button
+          type="button"
+          class="inline-flex items-center gap-2 rounded-full border border-slate-300/80 bg-white/70 px-3 py-1.5 text-[11px] text-slate-700 shadow shadow-slate-200/60 backdrop-blur transition hover:border-emerald-400/80 hover:text-emerald-600 dark:border-slate-700/70 dark:bg-slate-900/80 dark:text-slate-300 dark:shadow-slate-900/40 dark:hover:border-emerald-400/80 dark:hover:text-emerald-300"
+          @click="applyTheme(theme === 'dark' ? 'light' : 'dark')"
+        >
+          <span class="inline-flex h-5 w-5 items-center justify-center rounded-full bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-amber-300">
+            <span v-if="theme === 'dark'">☾</span>
+            <span v-else>☀</span>
+          </span>
+          <span class="hidden sm:inline">
+            <span v-if="theme === 'dark'">Dark mode</span>
+            <span v-else>Light mode</span>
+          </span>
+        </button>
+
+        <div
+          class="hidden sm:flex items-center gap-1 text-[11px] text-slate-500 dark:text-slate-300"
+        >
+          <span
+            class="h-2 w-2 rounded-full bg-emerald-400 shadow shadow-emerald-400/70 animate-pulse"
+          ></span>
+          <span>Available for new opportunities</span>
+        </div>
+
+        <div
+          class="inline-flex items-center gap-2 rounded-full border border-slate-300/70 bg-white/80 px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-slate-600 shadow-lg shadow-slate-200/70 dark:border-slate-700/70 dark:bg-slate-950/70 dark:text-slate-400 dark:shadow-slate-900/80"
+        >
+          <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
+          <span>Portfolio</span>
+        </div>
       </div>
     </div>
   </div>
@@ -299,7 +364,7 @@ onBeforeUnmount(() => {
 
       <!-- Main hero -->
       <main
-        class="flex flex-1 items-center justify-center px-6 pb-10 pt-6 sm:px-10 sm:pt-8 lg:pb-14"
+        class="flex flex-1 items-center justify-center px-4 pb-10 pt-4 sm:px-10 sm:pt-8 lg:pb-14"
       >
         <div
           class="grid w-full max-w-6xl gap-10 items-center lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1.1fr)]"
@@ -307,12 +372,12 @@ onBeforeUnmount(() => {
           <!-- Left: headline and CTAs -->
           <section class="space-y-6 sm:space-y-7">
             <p
-              class="inline-flex items-center gap-2 rounded-full border border-slate-300/80 bg-white/80 px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-slate-600 shadow shadow-blue-500/10 dark:border-slate-700/70 dark:bg-slate-900/70 dark:text-slate-300"
+              class="flex w-full items-center justify-center gap-2 rounded-2xl border border-slate-300/80 bg-white/80 px-4 py-2.5 text-center text-[10px] uppercase leading-snug tracking-[0.12em] text-slate-600 shadow shadow-blue-500/10 sm:inline-flex sm:w-auto sm:rounded-full sm:px-3 sm:py-1 sm:text-[11px] sm:tracking-[0.18em] dark:border-slate-700/70 dark:bg-slate-900/70 dark:text-slate-300"
             >
               <span
-                class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-ping-once"
+                class="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-400 animate-ping-once"
               ></span>
-              Turning complex problems into sharp, reliable products
+              <span>Turning complex problems into sharp, reliable products</span>
             </p>
 
             <div class="space-y-4 sm:space-y-5">
@@ -340,112 +405,103 @@ onBeforeUnmount(() => {
               </p>
             </div>
 
-<div class="flex flex-col gap-4 sm:flex-row sm:items-center">
-<div class="flex flex-col gap-4 w-full">
-  
-    <!-- Row 1: Three CTAs -->
-    <div class="flex flex-wrap justify-center gap-3 sm:flex-nowrap">
-      <div class="flex gap-3 group">
-        <!-- Primary CTA -->
-        <a
-          class="cursor-default inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-500 via-emerald-400 to-cyan-400 px-6 py-2.5 text-sm font-semibold text-slate-950 shadow-xl shadow-emerald-500/25 transition hover:shadow-2xl hover:shadow-emerald-500/40"
-        >
-          See how I work
-          <span
-            class="text-lg inline-flex h-5 w-5 items-center justify-center rounded-full bg-slate-950/10 text-[11px] group-hover:translate-x-0.5 transition-transform"
-          >
-            →
-          </span>
-        </a>
+            <!-- Hero CTAs: stacked on mobile, centered row on tablet, left-aligned from lg -->
+            <div class="flex w-full flex-col gap-4">
+              <div
+                class="flex w-full flex-col gap-3 md:flex-row md:flex-wrap md:items-center md:justify-center md:gap-x-4 md:gap-y-3 lg:justify-start"
+              >
+                <a
+                  ref="wireFeaturesTrigger"
+                  href="#wire-features"
+                  @click.prevent="scrollToWork"
+                  class="inline-flex min-h-[3rem] w-full items-center justify-center gap-2 whitespace-nowrap rounded-2xl bg-gradient-to-r from-blue-500 via-emerald-400 to-cyan-400 px-5 py-3.5 text-sm font-semibold text-slate-950 shadow-xl shadow-emerald-500/25 transition hover:shadow-2xl hover:shadow-emerald-500/40 md:w-auto md:rounded-full md:px-5 md:py-2.5 lg:px-6"
+                >
+                  See how I work
+                  <span
+                    class="inline-flex h-5 w-5 items-center justify-center rounded-full bg-slate-950/10 text-[11px]"
+                  >
+                    →
+                  </span>
+                </a>
 
-        <!-- Secondary CTA -->
-        <a
-          href="#about"
-          @click.prevent="scrollToAbout"
-          class="inline-flex items-center hover:translate-y-0.5 gap-2 rounded-full border border-slate-300/80 bg-white/80 px-5 py-2.5 text-sm font-medium text-slate-900 shadow-lg shadow-slate-200/30 transition
-                hover:border-emerald-400/80 hover:bg-white hover:shadow-emerald-500/20
-                group-hover:shadow-emerald-500/60
-                dark:border-slate-700/80 dark:bg-slate-900/70 dark:text-slate-100
-                dark:hover:border-emerald-400/80 dark:hover:bg-slate-900 dark:hover:shadow-emerald-500/30"
-        >
-          Why I am a great hire
-        </a>
-        </div>
+                <a
+                  href="#about"
+                  @click.prevent="scrollToAbout"
+                  class="inline-flex min-h-[3rem] w-full items-center justify-center gap-2 whitespace-nowrap rounded-2xl border border-slate-300/80 bg-white/80 px-5 py-3.5 text-sm font-medium text-slate-900 shadow-lg shadow-slate-200/30 transition hover:border-emerald-400/80 hover:bg-white hover:shadow-emerald-500/20 dark:border-slate-700/80 dark:bg-slate-900/70 dark:text-slate-100 dark:hover:border-emerald-400/80 dark:hover:bg-slate-900 dark:hover:shadow-emerald-500/30 md:w-auto md:rounded-full md:px-5 md:py-2.5 lg:px-6"
+                >
+                  Why I am a great hire
+                </a>
 
-        <!-- Tertiary CTA -->
-        <Link
-          href="/about"
-          class="inline-flex items-center hover:translate-y-0.5 gap-2 rounded-full border border-slate-300/80 bg-white/80 px-5 py-2.5 text-sm font-medium text-slate-900 shadow-lg transition hover:border-emerald-400/80 hover:bg-white hover:shadow-emerald-500/20 dark:border-slate-700/80 dark:bg-slate-900/70 dark:text-slate-100 dark:hover:border-emerald-400/80 dark:hover:bg-slate-900 dark:hover:shadow-emerald-500/30"
-        >
-          About my background
-        </Link>
-      </div>
+                <Link
+                  href="/about"
+                  class="inline-flex min-h-[3rem] w-full items-center justify-center gap-2 whitespace-nowrap rounded-2xl border border-slate-300/80 bg-white/80 px-5 py-3.5 text-sm font-medium text-slate-900 shadow-lg transition hover:border-emerald-400/80 hover:bg-white hover:shadow-emerald-500/20 dark:border-slate-700/80 dark:bg-slate-900/70 dark:text-slate-100 dark:hover:border-emerald-400/80 dark:hover:bg-slate-900 dark:hover:shadow-emerald-500/30 md:w-auto md:rounded-full md:px-5 md:py-2.5 lg:px-6"
+                >
+                  About my background
+                </Link>
+              </div>
 
-  <!-- Row 2: centered "or" -->
-  <div class="flex justify-center">
-    <span class="text-[11px] text-slate-500 dark:text-slate-300">or</span>
-  </div>
+              <!-- Demo section divider -->
+              <div class="flex items-center gap-3 py-0.5">
+                <span class="h-px flex-1 bg-slate-300/80 dark:bg-slate-700/80" aria-hidden="true" />
+                <span class="shrink-0 text-[11px] uppercase tracking-[0.14em] text-slate-500 dark:text-slate-400">
+                  Explore demos
+                </span>
+                <span class="h-px flex-1 bg-slate-300/80 dark:bg-slate-700/80" aria-hidden="true" />
+              </div>
 
-  <!-- Row 3: centered login / go to dashboards -->
-  <div class="flex flex-wrap justify-center gap-2">
-    <template v-if="user">
-      <!-- Existing TaskFlow dashboard button -->
-      <Link
-        href="/dashboard"
-        class="inline-flex items-center gap-2 hover:translate-y-0.5 rounded-full border border-slate-300/80 bg-white/80 px-3 py-1.5 text-xs text-slate-900 shadow-lg transition hover:border-blue-400/80 hover:bg-white hover:shadow-blue-500/20 dark:border-slate-700/80 dark:bg-slate-900/70 dark:text-slate-100 dark:hover:border-blue-400/80 dark:hover:bg-slate-900 dark:hover:shadow-blue-500/30"
-      >
-        TaskFlow Dashboard
-      </Link>
+              <!-- Demo links: stacked on mobile, centered row on tablet -->
+              <div
+                class="flex w-full flex-col gap-3 md:flex-row md:flex-wrap md:items-center md:justify-center md:gap-x-3 md:gap-y-3 lg:justify-start"
+              >
+                <template v-if="user">
+                  <Link
+                    href="/dashboard"
+                    class="inline-flex min-h-[3rem] w-full items-center justify-center gap-2 rounded-2xl border border-slate-300/80 bg-white/80 px-4 py-3.5 text-sm text-slate-900 shadow-lg transition hover:border-blue-400/80 hover:bg-white hover:shadow-blue-500/20 dark:border-slate-700/80 dark:bg-slate-900/70 dark:text-slate-100 dark:hover:border-blue-400/80 dark:hover:bg-slate-900 dark:hover:shadow-blue-500/30 md:w-auto md:rounded-full md:py-2 md:text-xs"
+                  >
+                    TaskFlow Dashboard
+                  </Link>
 
-      <!-- Incident Incident Command Center dashboard button -->
-      <Link
-        href="/incident-command"
-        class="inline-flex items-center gap-2 hover:translate-y-0.5 rounded-full border border-slate-300/80 bg-white/80 px-3 py-1.5 text-xs text-slate-900 shadow-lg transition hover:border-blue-400/80 hover:bg-white hover:shadow-blue-500/20 dark:border-slate-700/80 dark:bg-slate-900/70 dark:text-slate-100 dark:hover:border-blue-400/80 dark:hover:bg-slate-900 dark:hover:shadow-blue-500/30"
-      >
-        Incident Command Center Dashboard
-      </Link>
+                  <Link
+                    href="/incident-command"
+                    class="inline-flex min-h-[3rem] w-full items-center justify-center gap-2 rounded-2xl border border-slate-300/80 bg-white/80 px-4 py-3.5 text-sm text-slate-900 shadow-lg transition hover:border-blue-400/80 hover:bg-white hover:shadow-blue-500/20 dark:border-slate-700/80 dark:bg-slate-900/70 dark:text-slate-100 dark:hover:border-blue-400/80 dark:hover:bg-slate-900 dark:hover:shadow-blue-500/30 md:w-auto md:rounded-full md:py-2 md:text-xs"
+                  >
+                    <span class="md:hidden">Incident Command</span>
+                    <span class="hidden md:inline">Incident Command Center Dashboard</span>
+                  </Link>
 
-      <!-- Game button -->
-      <Link
-        href="/orbital-dodge"
-        class="inline-flex hidden sm:flex items-center gap-2 hover:translate-y-0.5 rounded-full border border-slate-300/80 bg-white/80 px-3 py-1.5 text-xs text-slate-900 shadow-lg transition hover:border-blue-400/80 hover:bg-white hover:shadow-blue-500/20 dark:border-slate-700/80 dark:bg-slate-900/70 dark:text-slate-100 dark:hover:border-blue-400/80 dark:hover:bg-slate-900 dark:hover:shadow-blue-500/30"
-      >
-        Orbital Dodge Game
-      </Link>
-    </template>
+                  <Link
+                    href="/orbital-dodge"
+                    class="inline-flex min-h-[3rem] w-full items-center justify-center gap-2 rounded-2xl border border-slate-300/80 bg-white/80 px-4 py-3.5 text-sm text-slate-900 shadow-lg transition hover:border-blue-400/80 hover:bg-white hover:shadow-blue-500/20 dark:border-slate-700/80 dark:bg-slate-900/70 dark:text-slate-100 dark:hover:border-blue-400/80 dark:hover:bg-slate-900 dark:hover:shadow-blue-500/30 md:w-auto md:rounded-full md:py-2 md:text-xs"
+                  >
+                    Orbital Dodge Game
+                  </Link>
+                </template>
 
-    <template v-else>
-      <!-- Existing TaskFlow login -->
-      <Link
-        href="/login"
-        class="inline-flex items-center hover:translate-y-0.5 gap-2 rounded-full border border-slate-300/80 bg-white/80 px-3 py-1.5 text-xs text-slate-900 shadow-lg transition hover:border-emerald-400/80 hover:bg-white hover:shadow-emerald-500/20 dark:border-slate-700/80 dark:bg-slate-900/70 dark:text-slate-100 dark:hover:border-blue-400/80 dark:hover:bg-slate-900 dark:hover:shadow-blue-500/30"
-      >
-        Log in to TaskFlow demo
-      </Link>
+                <template v-else>
+                  <Link
+                    href="/login"
+                    class="inline-flex min-h-[3rem] w-full items-center justify-center gap-2 rounded-2xl border border-slate-300/80 bg-white/80 px-4 py-3.5 text-sm text-slate-900 shadow-lg transition hover:border-emerald-400/80 hover:bg-white hover:shadow-emerald-500/20 dark:border-slate-700/80 dark:bg-slate-900/70 dark:text-slate-100 dark:hover:border-emerald-400/80 dark:hover:bg-slate-900 dark:hover:shadow-emerald-500/30 md:w-auto md:rounded-full md:py-2 md:text-xs"
+                  >
+                    <span class="md:hidden">TaskFlow demo</span>
+                    <span class="hidden md:inline">Log in to TaskFlow demo</span>
+                  </Link>
 
-      <!-- New Incident Command Center login -->
-      <Link
-        href="/incident-command/login"
-        class="inline-flex items-center hover:translate-y-0.5 gap-2 rounded-full border border-slate-300/80 bg-white/80 px-3 py-1.5 text-xs text-slate-900 shadow-lg transition hover:border-blue-400/80 hover:bg-white hover:shadow-blue-500/20 dark:border-slate-700/80 dark:bg-slate-900/70 dark:text-slate-100 dark:hover:border-blue-400/80 dark:hover:bg-slate-900 dark:hover:shadow-blue-500/30"
-      >
-        Log in to Incident Command Center Demo
-      </Link>
+                  <Link
+                    href="/incident-command/login"
+                    class="inline-flex min-h-[3rem] w-full items-center justify-center gap-2 rounded-2xl border border-slate-300/80 bg-white/80 px-4 py-3.5 text-sm text-slate-900 shadow-lg transition hover:border-blue-400/80 hover:bg-white hover:shadow-blue-500/20 dark:border-slate-700/80 dark:bg-slate-900/70 dark:text-slate-100 dark:hover:border-blue-400/80 dark:hover:bg-slate-900 dark:hover:shadow-blue-500/30 md:w-auto md:rounded-full md:py-2 md:text-xs"
+                  >
+                    <span class="md:hidden">Incident Command demo</span>
+                    <span class="hidden md:inline">Log in to Incident Command Center Demo</span>
+                  </Link>
 
-      <!-- Game button -->
-      <Link
-        href="/orbital-dodge"
-        class="inline-flex items-center hidden sm:flex hover:translate-y-0.5 gap-2 rounded-full border border-slate-300/80 bg-white/80 px-3 py-1.5 text-xs text-slate-900 shadow-lg transition hover:border-blue-400/80 hover:bg-white hover:shadow-blue-500/20 dark:border-slate-700/80 dark:bg-slate-900/70 dark:text-slate-100 dark:hover:border-blue-400/80 dark:hover:bg-slate-900 dark:hover:shadow-blue-500/30"
-      >
-        Orbital Dodge Game
-      </Link>
-    </template>
-  </div>
-
-
-  </div>
-
-
-
+                  <Link
+                    href="/orbital-dodge"
+                    class="inline-flex min-h-[3rem] w-full items-center justify-center gap-2 rounded-2xl border border-slate-300/80 bg-white/80 px-4 py-3.5 text-sm text-slate-900 shadow-lg transition hover:border-blue-400/80 hover:bg-white hover:shadow-blue-500/20 dark:border-slate-700/80 dark:bg-slate-900/70 dark:text-slate-100 dark:hover:border-blue-400/80 dark:hover:bg-slate-900 dark:hover:shadow-blue-500/30 md:w-auto md:rounded-full md:py-2 md:text-xs"
+                  >
+                    Orbital Dodge Game
+                  </Link>
+                </template>
+              </div>
             </div>
 
             <!-- Contact / links strip -->
@@ -708,11 +764,26 @@ onBeforeUnmount(() => {
 
               <!-- Card 4: live typing code preview -->
               <article
-                class="card-enter-4 relative overflow-hidden rounded-2xl border border-slate-200/90 
-                bg-gradient-to-tr from-white via-slate-50 to-slate-100 p-4 shadow-2xl shadow-slate-200/80 
-                backdrop-blur-lg min-h-[260px] dark:border-slate-800/90 dark:bg-gradient-to-tr dark:from-slate-900 
-                dark:via-slate-950 dark:to-slate-900 dark:shadow-slate-950/80 dark:hover:shadow-emerald-500/20"
+                id="wire-features"
+                ref="wireFeaturesCard"
+                :class="[
+                  'card-enter-4 group relative scroll-mt-24 overflow-visible rounded-2xl border bg-gradient-to-tr from-white via-slate-50 to-slate-100 p-4 shadow-2xl backdrop-blur-lg min-h-[260px] transition-all duration-500 ease-out hover:-translate-y-1.5 hover:border-emerald-400/70 hover:shadow-emerald-500/20 dark:bg-gradient-to-tr dark:from-slate-900 dark:via-slate-950 dark:to-slate-900 dark:shadow-slate-950/80 dark:hover:shadow-emerald-500/20',
+                  wireFeaturesHighlighted
+                    ? '-translate-y-2.5 border-emerald-400/90 shadow-[0_25px_50px_-12px_rgba(16,185,129,0.5)] dark:border-emerald-400/80 dark:shadow-[0_25px_50px_-12px_rgba(16,185,129,0.4)]'
+                    : 'border-slate-200/90 shadow-slate-200/80 dark:border-slate-800/90',
+                ]"
               >
+                <div
+                  class="pointer-events-none absolute -inset-1 rounded-[18px] transition-opacity duration-500"
+                  :class="wireFeaturesHighlighted ? 'opacity-100' : 'opacity-0'"
+                  aria-hidden="true"
+                >
+                  <div
+                    class="absolute inset-0 rounded-2xl border-2 border-emerald-400/60 shadow-[0_0_55px_rgba(16,185,129,0.45),0_0_25px_rgba(34,211,238,0.25)]"
+                  />
+                </div>
+
+                <div class="relative">
                 <div class="mb-3 flex items-center justify-between gap-4">
                   <h2 class="text-sm font-semibold text-slate-900 dark:text-slate-50">
                     How I wire features together
@@ -763,7 +834,7 @@ onBeforeUnmount(() => {
                     </pre>
                 </div>
 
-
+                </div>
               </article>
             </div>
           </section>
