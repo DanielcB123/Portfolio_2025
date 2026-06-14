@@ -77,18 +77,42 @@ const toggleTheme = () => {
   applyTheme(theme.value === 'dark' ? 'light' : 'dark');
 };
 
-// Typed code snippet for the "live editor" card
-const fullSnippet = `
-// routes/web.php
+// Typed code snippet tabs for the "live editor" card
+const codeTabs = [
+  {
+    id: 'web-php',
+    label: 'web.php',
+    code: `// routes/web.php
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/new-feature', [NewFeatureController::class, 'index'])
         ->name('new-feature.index');
 
     Route::post('/new-feature', [NewFeatureController::class, 'store'])
         ->name('new-feature.store');
-});
+});`,
+  },
+  {
+    id: 'middleware',
+    label: 'Middleware',
+    code: `// app/Http/Middleware/EnsureNewFeatureAccess.php
+class EnsureNewFeatureAccess
+{
+    public function handle(Request $request, Closure $next): Response
+    {
+        $user = $request->user();
 
-// app/Http/Controllers/NewFeatureController.php
+        if (! $user?->hasVerifiedEmail() || ! $user->can('access-new-feature')) {
+            abort(403, 'You do not have access to this feature.');
+        }
+
+        return $next($request);
+    }
+}`,
+  },
+  {
+    id: 'controller',
+    label: 'Controller',
+    code: `// app/Http/Controllers/NewFeatureController.php
 class NewFeatureController extends Controller
 {
     public function __construct(
@@ -121,9 +145,12 @@ class NewFeatureController extends Controller
             ->route('new-feature.index')
             ->with('flash.success', 'New feature item created.');
     }
-}
-
-// app/Services/NewFeatureService.php
+}`,
+  },
+  {
+    id: 'service',
+    label: 'Service',
+    code: `// app/Services/NewFeatureService.php
 class NewFeatureService
 {
     public function __construct(
@@ -156,9 +183,35 @@ class NewFeatureService
             ]);
         });
     }
-}
+}`,
+  },
+  {
+    id: 'model',
+    label: 'Model',
+    code: `// app/Models/NewFeature.php
+class NewFeature extends Model
+{
+    protected $fillable = ['user_id', 'title', 'status', 'meta'];
 
-// database/migrations/2025_01_01_000000_create_new_features_table.php
+    protected $casts = [
+        'meta' => 'array',
+    ];
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function scopeOpen($query)
+    {
+        return $query->where('status', 'open');
+    }
+}`,
+  },
+  {
+    id: 'migration',
+    label: 'Migration',
+    code: `// database/migrations/2025_01_01_000000_create_new_features_table.php
 Schema::create('new_features', function (Blueprint $table) {
     $table->id();
     $table->foreignId('user_id')->constrained()->cascadeOnDelete();
@@ -166,37 +219,84 @@ Schema::create('new_features', function (Blueprint $table) {
     $table->string('status')->default('open')->index();
     $table->json('meta')->nullable();
     $table->timestamps();
+});`,
+  },
+  {
+    id: 'vue',
+    label: 'Vue',
+    code: `// resources/js/Pages/NewFeature/Index.vue
+<script setup>
+import { Head, useForm } from '@inertiajs/vue3';
+
+const props = defineProps({
+  items: Object,
+  filters: Object,
 });
 
-// resources/js/Pages/NewFeature/Index.vue
-export default {
-  props: {
-    items: Object,
-    filters: Object,
-  },
-  setup(props) {
-    const form = useForm({
-      title: '',
-      meta: {},
-    });
+const form = useForm({
+  title: '',
+  meta: {},
+});
 
-    const submit = () => {
-      form.post(route('new-feature.store'));
-    };
-
-    return { form, submit, items: props.items };
-  },
+const submit = () => {
+  form.post(route('new-feature.store'));
 };
+<\/script>
 
-// resources/views/layouts/app.blade.php (excerpt)
-<title>{{ $title ?? 'NewFeature' }} | Company</title>
-`;
+<template>
+  <Head title="New Feature" />
 
+  <form @submit.prevent="submit">
+    <input v-model="form.title" type="text" />
+    <button type="submit" :disabled="form.processing">
+      Create item
+    </button>
+  </form>
+</template>`,
+  },
+];
+
+const activeCodeTab = ref(codeTabs[0].id);
 const typedSnippet = ref('');
 const cursorVisible = ref(true);
 
 let typeTimer = null;
 let cursorTimer = null;
+let typeIndex = 0;
+
+const clearTypeTimer = () => {
+  if (typeTimer) {
+    window.clearInterval(typeTimer);
+    typeTimer = null;
+  }
+};
+
+const getActiveTabCode = () =>
+  codeTabs.find((tab) => tab.id === activeCodeTab.value)?.code ?? '';
+
+const startTypingEffect = () => {
+  clearTypeTimer();
+  typedSnippet.value = '';
+  typeIndex = 0;
+
+  const code = getActiveTabCode();
+
+  typeTimer = window.setInterval(() => {
+    if (typeIndex < code.length) {
+      typedSnippet.value += code[typeIndex];
+      typeIndex += 1;
+    } else {
+      clearTypeTimer();
+    }
+  }, 22);
+};
+
+const selectCodeTab = (tabId) => {
+  if (activeCodeTab.value === tabId) return;
+
+  activeCodeTab.value = tabId;
+  startTypingEffect();
+};
 
 onMounted(() => {
   // Initialize theme from localStorage or system preference
@@ -212,18 +312,7 @@ onMounted(() => {
     }
   }
 
-  // Typing effect
-  let i = 0;
-
-  typeTimer = window.setInterval(() => {
-    if (i < fullSnippet.length) {
-      typedSnippet.value += fullSnippet[i];
-      i += 1;
-    } else {
-      window.clearInterval(typeTimer);
-      typeTimer = null;
-    }
-  }, 22); // typing speed
+  startTypingEffect();
 
   cursorTimer = window.setInterval(() => {
     cursorVisible.value = !cursorVisible.value;
@@ -233,7 +322,7 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
-  if (typeTimer) window.clearInterval(typeTimer);
+  clearTypeTimer();
   if (cursorTimer) window.clearInterval(cursorTimer);
   document.removeEventListener('click', dismissWireFeaturesHighlight);
 });
@@ -800,9 +889,9 @@ onBeforeUnmount(() => {
                 class="code-shell border border-slate-200 bg-slate-50 text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-50"
                 >
                     <div
-                        class="code-shell-header flex items-center justify-between gap-1 border-b border-slate-200 bg-slate-100 dark:border-slate-700 dark:bg-slate-900"
+                        class="code-shell-header border-b border-slate-200 bg-slate-100 dark:border-slate-700 dark:bg-slate-900"
                     >
-                        <div class="flex items-center gap-1">
+                        <div class="flex items-center gap-1 border-b border-slate-200/80 px-2 py-1.5 dark:border-slate-700/80">
                             <span class="dot dot-red"></span>
                             <span class="dot dot-yellow"></span>
                             <span class="dot dot-green"></span>
@@ -812,19 +901,33 @@ onBeforeUnmount(() => {
                                 NewFeature stack
                             </span>
                         </div>
-                        <div
-                        class="hidden sm:flex items-center gap-2 text-[10px] text-slate-500 dark:text-slate-400"
+                        <nav
+                          class="code-tab-nav flex flex-nowrap items-center justify-center gap-0.5 overflow-x-auto px-2 py-1.5 text-[9px] sm:text-[10px]"
+                          aria-label="Code snippet layers"
                         >
-                            <span>web.php</span>
-                            <span>·</span>
-                            <span>Controller</span>
-                            <span>·</span>
-                            <span>Service</span>
-                            <span>·</span>
-                            <span>Migration</span>
-                            <span>·</span>
-                            <span>Vue</span>
-                        </div>
+                          <template v-for="(tab, index) in codeTabs" :key="tab.id">
+                            <span
+                              v-if="index > 0"
+                              class="shrink-0 px-0.5 text-slate-400 dark:text-slate-600"
+                              aria-hidden="true"
+                            >
+                              ·
+                            </span>
+                            <button
+                              type="button"
+                              :aria-current="activeCodeTab === tab.id ? 'page' : undefined"
+                              class="shrink-0 whitespace-nowrap rounded px-1 py-0.5 transition sm:px-1.5"
+                              :class="
+                                activeCodeTab === tab.id
+                                  ? 'bg-emerald-500/15 font-medium text-emerald-600 dark:text-emerald-300'
+                                  : 'text-slate-500 hover:text-emerald-500 dark:text-slate-400 dark:hover:text-emerald-300'
+                              "
+                              @click="selectCodeTab(tab.id)"
+                            >
+                              {{ tab.label }}
+                            </button>
+                          </template>
+                        </nav>
                     </div>
 
                     <pre
@@ -1141,7 +1244,7 @@ onBeforeUnmount(() => {
 
   display: flex;
   flex-direction: column;
-  height: 210px;
+  height: 225px;
 }
 
 /* Code shell layout only */
@@ -1152,17 +1255,22 @@ onBeforeUnmount(() => {
 
   display: flex;
   flex-direction: column;
-  height: 210px;
+  height: 225px;
 }
 
 /* Header layout only */
 .code-shell-header {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.35rem;
-  padding: 0.4rem 0.75rem;
+  flex-direction: column;
   flex-shrink: 0;
+}
+
+.code-tab-nav {
+  scrollbar-width: none;
+}
+
+.code-tab-nav::-webkit-scrollbar {
+  display: none;
 }
 
 /* Code block layout only */
