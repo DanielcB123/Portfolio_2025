@@ -27,14 +27,14 @@ const dismissWireFeaturesHighlight = (event) => {
   wireFeaturesHighlighted.value = false
 }
 
-const scrollToWork = () => {
+const scrollToRef = (targetRef, options = { behavior: 'smooth', block: 'center' }) => {
   if (typeof window === 'undefined') return
 
-  wireFeaturesCard.value?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  targetRef.value?.scrollIntoView(options)
+}
 
-  const isDesktop = window.matchMedia('(min-width: 1024px)').matches
-  if (!isDesktop) return
-
+const scrollToWork = () => {
+  scrollToRef(wireFeaturesCard)
   wireFeaturesHighlighted.value = true
 }
 
@@ -487,10 +487,15 @@ onBeforeUnmount(() => {
                 web and app experiences.
               </h1>
 
-              <p class="max-w-xl text-sm sm:text-base text-slate-600 dark:text-slate-300">  
-                From Laravel and Vue to React Native and revived Vanilla PHP legacy systems, I ship tools that matter. 
-                CRM platforms, insurance workflows, dispatch systems, billing engines, civic engagement apps. 
-                I am ready to create the next one with your team.
+              <p class="max-w-xl text-sm sm:text-base text-slate-600 dark:text-slate-300">
+                I build production software across the full stack with Laravel, Vue, React, React Native,
+                and modern PHP. My work combines strong MySQL, schema design, API development,
+                and legacy system modernization, including spaghetti code refactoring. I have built
+                and supported operational systems for insurance workflows, engineering workflows, dispatch,
+                billing, CRM, internal dashboards, and field service technician mobile applications in
+                data heavy environments. I also handle the practical side of shipping software with Docker, CI/CD pipelines,
+                GitHub Actions, Render, and AWS infrastructure such as EC2 (Server), S3 (Storage), RDS (DB),
+                IAM (Access Management), Route 53 (DNS), and related cloud services.
               </p>
             </div>
 
@@ -966,13 +971,13 @@ onBeforeUnmount(() => {
           </header>
 
           <div class="grid gap-5 md:grid-cols-3">
-            <!-- Card: Operational analytics and schema design -->
+            <!-- Card: Production data models -->
             <article
               class="relative flex flex-col gap-3 rounded-2xl border border-slate-200/80 bg-white/90 p-4 shadow-xl shadow-slate-200/70 dark:border-slate-800/80 dark:bg-slate-900/90 dark:shadow-slate-950/70"
             >
               <div class="flex items-center justify-between gap-3">
                 <h3 class="text-sm font-semibold text-slate-900 dark:text-slate-50">
-                  Operational analytics and schema design
+                  Production data models
                 </h3>
                 <span
                   class="rounded-full bg-emerald-500/10 px-2 py-0.5 text-[10px] text-emerald-600 dark:text-emerald-300"
@@ -981,13 +986,14 @@ onBeforeUnmount(() => {
                 </span>
               </div>
               <p class="text-xs text-slate-600 dark:text-slate-300">
-                Created durable data models and indexes that tie together product features, background systems, 
-                operational workflows, and real-time user experiences.
+                Built and maintained data models behind real business workflows, including insurance operations,
+                dispatch, billing, CRM activity, recruiting tools, dashboards, and technicians mobile applications running
+                in data heavy environments.
               </p>
               <ul class="mt-1 space-y-1 text-[11px] text-slate-600 dark:text-slate-300">
-                <li>• Normalized schemas with clear foreign keys</li>
-                <li>• Aggregate queries for totals, trends, and leaderboards</li>
-                <li>• Migrations that are safe to run on live traffic</li>
+                <li>• Relational schemas with clear ownership and foreign keys</li>
+                <li>• Reporting queries, operational dashboards, and workflow backed data</li>
+                <li>• Production safe migrations, backfills, and deployment aware changes</li>
               </ul>
             </article>
 

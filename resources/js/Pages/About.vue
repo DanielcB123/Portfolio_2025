@@ -27,11 +27,10 @@ import { Head, Link } from '@inertiajs/vue3';
     <div class="relative z-10 flex min-h-screen flex-col">
       <!-- Top bar -->
       <header class="px-6 pt-10 sm:px-10 sm:pt-8">
-        <div class="mx-auto flex w-full max-w-6xl items-center justify-between">
-        <div class="mb-5 flex justify-center">
+        <div class="mx-auto flex w-full max-w-6xl items-center justify-between gap-4">
           <Link
             href="/"
-            class="inline-flex items-center gap-2 rounded-full border border-slate-300/80 bg-white/80 px-4 py-1.5 text-xs text-slate-700 shadow shadow-slate-200/60 backdrop-blur transition hover:border-emerald-400/80 hover:text-emerald-600 hover:bg-white dark:border-slate-700/70 dark:bg-slate-900/80 dark:text-slate-300 dark:shadow-slate-900/40 dark:hover:border-emerald-400/80 dark:hover:text-emerald-300 dark:hover:bg-slate-900"
+            class="inline-flex shrink-0 items-center gap-2 rounded-full border border-slate-300/80 bg-white/80 px-4 py-1.5 text-xs text-slate-700 shadow shadow-slate-200/60 backdrop-blur transition hover:border-emerald-400/80 hover:text-emerald-600 hover:bg-white dark:border-slate-700/70 dark:bg-slate-900/80 dark:text-slate-300 dark:shadow-slate-900/40 dark:hover:border-emerald-400/80 dark:hover:text-emerald-300 dark:hover:bg-slate-900"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -45,10 +44,9 @@ import { Head, Link } from '@inertiajs/vue3';
             </svg>
             Back to Portfolio
           </Link>
-        </div>
 
           <div
-            class="inline-flex items-center gap-2 rounded-full border border-slate-300/70 bg-white/80 px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-slate-600 shadow-lg shadow-slate-200/70 dark:border-slate-700/70 dark:bg-slate-950/70 dark:text-slate-400 dark:shadow-slate-900/80"
+            class="inline-flex shrink-0 items-center gap-2 rounded-full border border-slate-300/70 bg-white/80 px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-slate-600 shadow-lg shadow-slate-200/70 dark:border-slate-700/70 dark:bg-slate-950/70 dark:text-slate-400 dark:shadow-slate-900/80"
           >
             <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-ping-once"></span>
             <span>About</span>
