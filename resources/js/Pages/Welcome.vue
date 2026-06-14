@@ -319,7 +319,7 @@ onBeforeUnmount(() => {
               <h1
                 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight text-slate-900 dark:text-slate-50"
               >
-                I build the matrix is documentary and kicks ass
+                I build the matrix is documentary and kicks ass!
                 <span class="relative whitespace-nowrap">
                   <span
                     class="relative z-10 bg-gradient-to-r from-emerald-500 via-cyan-400 to-blue-500 bg-clip-text text-transparent"
