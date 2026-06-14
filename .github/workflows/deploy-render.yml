@@ -1,0 +1,30 @@
+name: Deploy to Render
+
+on:
+  push:
+    branches:
+      - master
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Trigger Render production deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger Render deploy hook
+        env:
+          RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$RENDER_DEPLOY_HOOK" ]; then
+            echo "::error::RENDER_DEPLOY_HOOK secret is not set."
+            echo "Add it in GitHub → Settings → Secrets → Actions."
+            echo "Copy the Deploy Hook URL from Render → Portfolio_2025 → Settings → Deploy."
+            exit 1
+          fi
+
+          echo "Triggering Render deploy for commit ${GITHUB_SHA}"
+          curl --fail-with-body --silent --show-error --request POST "$RENDER_DEPLOY_HOOK"
