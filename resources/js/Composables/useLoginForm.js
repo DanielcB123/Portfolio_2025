@@ -1,4 +1,5 @@
 import { useForm, usePage } from '@inertiajs/vue3'
+import { appRoute } from '@/utils/appRoute'
 
 export function useLoginForm(options = {}) {
   const { redirect = null } = options
@@ -17,7 +18,7 @@ export function useLoginForm(options = {}) {
   }
 
   const submit = () => {
-    form.post(route('login'), {
+    form.post(appRoute('login'), {
       onSuccess: () => {
         const user = page.props.auth?.user
         if (user?.api_key) {

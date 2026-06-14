@@ -3,6 +3,7 @@ import { Head, Link, useForm } from '@inertiajs/vue3'
 import AuthPageShell from '@/Components/Auth/AuthPageShell.vue'
 import AuthCardHeader from '@/Components/Auth/AuthCardHeader.vue'
 import { AUTH_PLACEHOLDERS } from '@/constants/authPlaceholders'
+import { appRoute } from '@/utils/appRoute'
 
 const props = defineProps({
   teams: { type: Array, default: () => [] },
@@ -17,7 +18,7 @@ const form = useForm({
 })
 
 const submit = () => {
-  form.post(route('register'), {
+  form.post(appRoute('register'), {
     onFinish: () => form.reset('password', 'password_confirmation'),
   })
 }

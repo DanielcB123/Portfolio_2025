@@ -3,17 +3,18 @@ import { Head, useForm, Link } from '@inertiajs/vue3'
 import AuthPageShell from '@/Components/Auth/AuthPageShell.vue'
 import AuthCardHeader from '@/Components/Auth/AuthCardHeader.vue'
 import { AUTH_PLACEHOLDERS } from '@/constants/authPlaceholders'
+import { appRoute } from '@/utils/appRoute'
 
 const form = useForm({
   name: '',
   email: '',
   password: '',
   password_confirmation: '',
-  redirect: route('incident.dashboard', {}, false),
+  redirect: appRoute('incident.dashboard'),
 })
 
 const submit = () => {
-  form.post(route('register'))
+  form.post(appRoute('register'))
 }
 </script>
 

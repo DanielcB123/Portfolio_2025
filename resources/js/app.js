@@ -7,7 +7,24 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers'
 import { createApp, h } from 'vue'
 
 import { ZiggyVue } from 'ziggy-js'
-import { Ziggy } from './ziggy'
+import { route as ziggyRoute } from 'ziggy-js'
+import { Ziggy as ZiggyFallback } from './ziggy'
+import { configureAppRoute } from './utils/appRoute'
+
+const ziggyBase =
+  typeof window !== 'undefined' && window.Ziggy ? window.Ziggy : ZiggyFallback
+
+const ziggy =
+  typeof window !== 'undefined'
+    ? {
+        ...ziggyBase,
+        // Ziggy uses `url` as the full origin for absolute URLs; `port` is subdomain-only.
+        url: window.location.origin,
+        port: null,
+      }
+    : ziggyBase
+
+configureAppRoute(ziggy)
 
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel'
@@ -23,7 +40,10 @@ createInertiaApp({
   setup({ el, App, props, plugin }) {
     const vueApp = createApp({ render: () => h(App, props) })
       .use(plugin)
-      .use(ZiggyVue, Ziggy)
+      .use(ZiggyVue, ziggy)
+
+    vueApp.config.globalProperties.route = (name, params = {}, absolute = false) =>
+      ziggyRoute(name, params, absolute, ziggy)
 
     vueApp.mount(el)
   },

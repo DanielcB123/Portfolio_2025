@@ -5,6 +5,7 @@ import AuthCardHeader from '@/Components/Auth/AuthCardHeader.vue'
 import DemoUserPicker from '@/Components/Auth/DemoUserPicker.vue'
 import { useLoginForm } from '@/Composables/useLoginForm'
 import { AUTH_PLACEHOLDERS } from '@/constants/authPlaceholders'
+import { appRoute } from '@/utils/appRoute'
 
 defineProps({
   demoUsers: {
@@ -18,7 +19,7 @@ defineProps({
 })
 
 const { form, fillDemoUser, submit } = useLoginForm({
-  redirect: route('incident.dashboard', {}, false),
+  redirect: appRoute('incident.dashboard'),
 })
 </script>
 
