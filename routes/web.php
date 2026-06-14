@@ -51,13 +51,11 @@ Route::middleware('guest')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
 
     // Optional separate login/register just for this demo
-    Route::get('/incident-command/login', function () {
-        return inertia('Incident/Login');
-    })->name('incident.login');
+    Route::get('/incident-command/login', [AuthController::class, 'showIncidentLogin'])
+        ->name('incident.login');
 
-    Route::get('/incident-command/register', function () {
-        return inertia('Incident/Register');
-    })->name('incident.register');
+    Route::get('/incident-command/register', [AuthController::class, 'showIncidentRegister'])
+        ->name('incident.register');
 });
 
 // Authenticated routes

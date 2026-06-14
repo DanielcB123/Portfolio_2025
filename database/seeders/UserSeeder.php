@@ -2,89 +2,40 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 use App\Models\Team;
-use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+use RuntimeException;
 
 class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        $mediahaus = Team::where('slug', 'mediahaus-squad')->first();
-        $design    = Team::where('slug', 'design-team')->first();
+        $users = config('demo_users.users', []);
+        $teamsBySlug = Team::query()
+            ->whereIn('slug', collect($users)->pluck('team_slug')->unique())
+            ->get()
+            ->keyBy('slug');
 
-        // Fallback if teams weren't seeded yet
-        if (! $mediahaus) {
-            $mediahaus = Team::create([
-                'name'  => 'MediaHaus Squad',
-                'slug'  => 'mediahaus-squad',
-                'color' => '#2563eb',
-            ]);
+        foreach ($users as $user) {
+            $team = $teamsBySlug->get($user['team_slug']);
+
+            if (! $team) {
+                throw new RuntimeException(
+                    "Demo user {$user['email']} references unknown team slug [{$user['team_slug']}]. Run TeamSeeder first."
+                );
+            }
+
+            User::updateOrCreate(
+                ['email' => $user['email']],
+                [
+                    'name'         => $user['name'],
+                    'password'     => Hash::make(config('demo_users.password')),
+                    'team_id'      => $team->id,
+                    'avatar_color' => $user['avatar_color'],
+                ]
+            );
         }
-
-        if (! $design) {
-            $design = Team::create([
-                'name'  => 'Design Team',
-                'slug'  => 'design-team',
-                'color' => '#ec4899',
-            ]);
-        }
-
-        //
-        // MediaHaus Squad (3 users)
-        //
-        User::updateOrCreate(
-            ['email' => 'media1@example.com'],
-            [
-                'name'         => 'Media User 1',
-                'password'     => Hash::make('password'),
-                'team_id'      => $mediahaus->id,
-                'avatar_color' => '#0ea5e9',
-            ]
-        );
-
-        User::updateOrCreate(
-            ['email' => 'media2@example.com'],
-            [
-                'name'         => 'Media User 2',
-                'password'     => Hash::make('password'),
-                'team_id'      => $mediahaus->id,
-                'avatar_color' => '#22c55e',
-            ]
-        );
-
-        User::updateOrCreate(
-            ['email' => 'media3@example.com'],
-            [
-                'name'         => 'Media User 3',
-                'password'     => Hash::make('password'),
-                'team_id'      => $mediahaus->id,
-                'avatar_color' => '#f59e0b',
-            ]
-        );
-
-        //
-        // Design Team (2 users)
-        //
-        User::updateOrCreate(
-            ['email' => 'design1@example.com'],
-            [
-                'name'         => 'Design User 1',
-                'password'     => Hash::make('password'),
-                'team_id'      => $design->id,
-                'avatar_color' => '#ec4899',
-            ]
-        );
-
-        User::updateOrCreate(
-            ['email' => 'design2@example.com'],
-            [
-                'name'         => 'Design User 2',
-                'password'     => Hash::make('password'),
-                'team_id'      => $design->id,
-                'avatar_color' => '#a855f7',
-            ]
-        );
     }
 }

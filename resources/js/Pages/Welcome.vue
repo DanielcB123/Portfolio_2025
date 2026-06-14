@@ -80,6 +80,39 @@ const toggleTheme = () => {
 // Typed code snippet tabs for the "live editor" card
 const codeTabs = [
   {
+    id: 'vue',
+    label: 'Vue',
+    code: `// resources/js/Pages/NewFeature/Index.vue
+<script setup>
+import { Head, useForm } from '@inertiajs/vue3';
+
+const props = defineProps({
+  items: Object,
+  filters: Object,
+});
+
+const form = useForm({
+  title: '',
+  meta: {},
+});
+
+const submit = () => {
+  form.post(route('new-feature.store'));
+};
+<\/script>
+
+<template>
+  <Head title="New Feature" />
+
+  <form @submit.prevent="submit">
+    <input v-model="form.title" type="text" />
+    <button type="submit" :disabled="form.processing">
+      Create item
+    </button>
+  </form>
+</template>`,
+  },
+  {
     id: 'web-php',
     label: 'web.php',
     code: `// routes/web.php
@@ -220,39 +253,6 @@ Schema::create('new_features', function (Blueprint $table) {
     $table->json('meta')->nullable();
     $table->timestamps();
 });`,
-  },
-  {
-    id: 'vue',
-    label: 'Vue',
-    code: `// resources/js/Pages/NewFeature/Index.vue
-<script setup>
-import { Head, useForm } from '@inertiajs/vue3';
-
-const props = defineProps({
-  items: Object,
-  filters: Object,
-});
-
-const form = useForm({
-  title: '',
-  meta: {},
-});
-
-const submit = () => {
-  form.post(route('new-feature.store'));
-};
-<\/script>
-
-<template>
-  <Head title="New Feature" />
-
-  <form @submit.prevent="submit">
-    <input v-model="form.title" type="text" />
-    <button type="submit" :disabled="form.processing">
-      Create item
-    </button>
-  </form>
-</template>`,
   },
 ];
 

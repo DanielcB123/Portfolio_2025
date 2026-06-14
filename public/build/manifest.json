@@ -3,15 +3,29 @@
     "file": "assets/_plugin-vue_export-helper-DlAUqK2U.js",
     "name": "_plugin-vue_export-helper"
   },
-  "_confetti.module-DG7XsoVb.js": {
-    "file": "assets/confetti.module-DG7XsoVb.js",
+  "_authPlaceholders-Bvaz2pC0.js": {
+    "file": "assets/authPlaceholders-Bvaz2pC0.js",
+    "name": "authPlaceholders",
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "_confetti.module-c_MyiP1P.js": {
+    "file": "assets/confetti.module-c_MyiP1P.js",
     "name": "confetti.module",
     "imports": [
       "resources/js/app.js"
     ]
   },
+  "_useLoginForm-BIuGfV2u.js": {
+    "file": "assets/useLoginForm-BIuGfV2u.js",
+    "name": "useLoginForm",
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
   "resources/js/Pages/About.vue": {
-    "file": "assets/About-CR5OHX2o.js",
+    "file": "assets/About-BoJlF2SZ.js",
     "name": "About",
     "src": "resources/js/Pages/About.vue",
     "isDynamicEntry": true,
@@ -24,13 +38,13 @@
     ]
   },
   "resources/js/Pages/Dashboard.vue": {
-    "file": "assets/Dashboard-Bc4kdb59.js",
+    "file": "assets/Dashboard-2ciRVBb5.js",
     "name": "Dashboard",
     "src": "resources/js/Pages/Dashboard.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_confetti.module-DG7XsoVb.js",
+      "_confetti.module-c_MyiP1P.js",
       "__plugin-vue_export-helper-DlAUqK2U.js"
     ],
     "css": [
@@ -38,13 +52,13 @@
     ]
   },
   "resources/js/Pages/Incident/Dashboard.vue": {
-    "file": "assets/Dashboard-VknuZloV.js",
+    "file": "assets/Dashboard-DxqLOHVy.js",
     "name": "Dashboard",
     "src": "resources/js/Pages/Incident/Dashboard.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_confetti.module-DG7XsoVb.js",
+      "_confetti.module-c_MyiP1P.js",
       "__plugin-vue_export-helper-DlAUqK2U.js"
     ],
     "css": [
@@ -52,38 +66,39 @@
     ]
   },
   "resources/js/Pages/Incident/Login.vue": {
-    "file": "assets/Login-C9WKVUzg.js",
+    "file": "assets/Login-Bol9iq-3.js",
     "name": "Login",
     "src": "resources/js/Pages/Incident/Login.vue",
     "isDynamicEntry": true,
     "imports": [
-      "resources/js/app.js"
+      "resources/js/app.js",
+      "_authPlaceholders-Bvaz2pC0.js",
+      "_useLoginForm-BIuGfV2u.js"
     ]
   },
   "resources/js/Pages/Incident/Register.vue": {
-    "file": "assets/Register-DIZCqJ2K.js",
+    "file": "assets/Register-CbENFA_p.js",
     "name": "Register",
     "src": "resources/js/Pages/Incident/Register.vue",
     "isDynamicEntry": true,
     "imports": [
-      "resources/js/app.js"
+      "resources/js/app.js",
+      "_authPlaceholders-Bvaz2pC0.js"
     ]
   },
   "resources/js/Pages/Login.vue": {
-    "file": "assets/Login-BLvlvLxf.js",
+    "file": "assets/Login-DXGRPMhg.js",
     "name": "Login",
     "src": "resources/js/Pages/Login.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "__plugin-vue_export-helper-DlAUqK2U.js"
-    ],
-    "css": [
-      "assets/Login-BOlbMtPx.css"
+      "_authPlaceholders-Bvaz2pC0.js",
+      "_useLoginForm-BIuGfV2u.js"
     ]
   },
   "resources/js/Pages/OrbitalDodge.vue": {
-    "file": "assets/OrbitalDodge-BfBkUvP-.js",
+    "file": "assets/OrbitalDodge-Bkd5AqdT.js",
     "name": "OrbitalDodge",
     "src": "resources/js/Pages/OrbitalDodge.vue",
     "isDynamicEntry": true,
@@ -96,20 +111,17 @@
     ]
   },
   "resources/js/Pages/Register.vue": {
-    "file": "assets/Register-hwwVGN-d.js",
+    "file": "assets/Register-BNramGpK.js",
     "name": "Register",
     "src": "resources/js/Pages/Register.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "__plugin-vue_export-helper-DlAUqK2U.js"
-    ],
-    "css": [
-      "assets/Register-B1hxmvf8.css"
+      "_authPlaceholders-Bvaz2pC0.js"
     ]
   },
   "resources/js/Pages/Welcome.vue": {
-    "file": "assets/Welcome-trisSJuj.js",
+    "file": "assets/Welcome-Dcmb-cV_.js",
     "name": "Welcome",
     "src": "resources/js/Pages/Welcome.vue",
     "isDynamicEntry": true,
@@ -118,11 +130,11 @@
       "__plugin-vue_export-helper-DlAUqK2U.js"
     ],
     "css": [
-      "assets/Welcome-BjsIRP1o.css"
+      "assets/Welcome-Cq0zV-pn.css"
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-CXgZSAba.js",
+    "file": "assets/app-D0f8GUvb.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -138,7 +150,7 @@
       "resources/js/Pages/Welcome.vue"
     ],
     "css": [
-      "assets/app-HdF6Xirc.css"
+      "assets/app-DYPpqTzd.css"
     ]
   }
 }
