@@ -68,6 +68,17 @@ export function useVerticalResize({
     document.body.style.touchAction = 'none'
   }
 
+  const load = () => {
+    if (!storageKey || typeof window === 'undefined') return
+
+    const stored = window.localStorage.getItem(storageKey)
+    const parsed = Number(stored)
+
+    if (!Number.isNaN(parsed)) {
+      height.value = clamp(parsed)
+    }
+  }
+
   onBeforeUnmount(stop)
 
   return { height, start, load }
