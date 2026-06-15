@@ -344,10 +344,10 @@ onBeforeUnmount(() => {
 
 <template>
   <div
-    class="relative min-h-screen w-full overflow-x-hidden bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-50"
+    class="welcome-page relative isolate w-full min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-50"
   >
     <!-- Glowing gradient orbs -->
-    <div class="pointer-events-none absolute inset-0">
+    <div class="pointer-events-none fixed inset-0 -z-10 overflow-hidden" aria-hidden="true">
       <div
         class="absolute -top-32 -left-16 h-72 w-72 rounded-full bg-gradient-to-br from-blue-500 via-emerald-400 to-cyan-400 opacity-40 blur-3xl animate-orb-float"
       ></div>
@@ -361,14 +361,16 @@ onBeforeUnmount(() => {
 
     <!-- Subtle grid background -->
     <div
-      class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(148,163,184,0.12)_0,_transparent_55%),linear-gradient(to_bottom,_rgba(15,23,42,0.04)_0,_rgba(15,23,42,0.35)_55%)] dark:bg-[radial-gradient(circle_at_top,_rgba(148,163,184,0.12)_0,_transparent_55%),linear-gradient(to_bottom,_rgba(15,23,42,0.7)_0,_rgba(15,23,42,1)_55%)]"
+      class="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(circle_at_top,_rgba(148,163,184,0.12)_0,_transparent_55%),linear-gradient(to_bottom,_rgba(15,23,42,0.04)_0,_rgba(15,23,42,0.35)_55%)] dark:bg-[radial-gradient(circle_at_top,_rgba(148,163,184,0.12)_0,_transparent_55%),linear-gradient(to_bottom,_rgba(15,23,42,0.7)_0,_rgba(15,23,42,1)_55%)]"
+      aria-hidden="true"
     ></div>
     <div
-      class="pointer-events-none absolute inset-0 opacity-30 mix-blend-soft-light [background-image:linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] [background-size:56px_56px] dark:[background-image:linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)]"
+      class="pointer-events-none fixed inset-0 -z-10 opacity-30 mix-blend-soft-light [background-image:linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] [background-size:56px_56px] dark:[background-image:linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)]"
+      aria-hidden="true"
     ></div>
 
     <!-- Content -->
-    <div class="relative z-10 flex min-h-screen w-full min-w-0 flex-col">
+    <div class="relative w-full min-w-0">
       <!-- Top nav / badge -->
 <header class="page-gutter pt-4 sm:pt-5">
   <div class="page-shell pt-2.5">
@@ -466,7 +468,7 @@ onBeforeUnmount(() => {
 
 
       <!-- Main hero -->
-      <main class="page-gutter w-full flex-1 pb-10 pt-4 sm:pt-8 lg:pb-14">
+      <main class="page-gutter w-full pb-10 pt-4 sm:pt-8 lg:pb-14">
         <div
           class="page-shell grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1.1fr)] lg:items-center"
         >
@@ -715,7 +717,7 @@ onBeforeUnmount(() => {
           </section>
 
           <!-- Right: animated "project snapshot" cards + live code -->
-          <section class="relative w-full min-w-0 overflow-x-clip">
+          <section class="relative w-full min-w-0 overflow-hidden">
             <!-- Halo glow -->
             <div
               class="pointer-events-none absolute -inset-4 rounded-[40px] bg-gradient-to-tr from-blue-500/10 via-emerald-500/5 to-cyan-500/10 blur-3xl sm:-inset-10 dark:from-blue-500/20 dark:via-emerald-500/10 dark:to-cyan-500/20"
@@ -961,7 +963,7 @@ onBeforeUnmount(() => {
                       aria-label="Resize code panel"
                       title="Drag to resize"
                       @mousedown.prevent="startCodeShellResize"
-                      @touchstart.prevent="startCodeShellResize"
+                      @touchstart="startCodeShellResize"
                     >
                       <span class="code-shell-resize-grip" aria-hidden="true" />
                     </div>
@@ -1163,6 +1165,10 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
+.welcome-page {
+  touch-action: pan-y;
+}
+
 @keyframes orb-float {
   0% {
     transform: translate3d(0, 0, 0) scale(1);
