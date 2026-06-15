@@ -35,7 +35,16 @@ const scrollToRef = (targetRef, options = { behavior: 'smooth', block: 'center' 
 }
 
 const scrollToWork = () => {
-  scrollToRef(wireFeaturesCard)
+  const prefersReducedMotion =
+    typeof window !== 'undefined' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const isTouchDevice =
+    typeof window !== 'undefined' && 'ontouchstart' in window
+
+  scrollToRef(wireFeaturesCard, {
+    behavior: prefersReducedMotion || isTouchDevice ? 'auto' : 'smooth',
+    block: 'center',
+  })
   wireFeaturesHighlighted.value = true
 }
 
@@ -260,6 +269,7 @@ Schema::create('new_features', function (Blueprint $table) {
 const activeCodeTab = ref(codeTabs[0].id);
 const typedSnippet = ref('');
 const cursorVisible = ref(true);
+const isTypingSnippet = ref(false);
 
 const {
   height: codeShellHeight,
@@ -290,6 +300,7 @@ const startTypingEffect = () => {
   clearTypeTimer();
   typedSnippet.value = '';
   typeIndex = 0;
+  isTypingSnippet.value = true;
 
   const code = getActiveTabCode();
 
@@ -299,6 +310,7 @@ const startTypingEffect = () => {
       typeIndex += 1;
     } else {
       clearTypeTimer();
+      isTypingSnippet.value = false;
     }
   }, 22);
 };
@@ -337,6 +349,7 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   clearTypeTimer();
+  isTypingSnippet.value = false;
   if (cursorTimer) window.clearInterval(cursorTimer);
   document.removeEventListener('click', dismissWireFeaturesHighlight);
 });
@@ -952,6 +965,7 @@ onBeforeUnmount(() => {
 
                     <pre
                         class="code-block bg-gradient-to-br from-slate-50 via-slate-100 to-slate-50 text-slate-900 dark:from-slate-900 dark:via-slate-950 dark:to-slate-900 dark:text-slate-100"
+                        :class="{ 'code-block-typing': isTypingSnippet }"
                     >
                         <code>{{ typedSnippet }}<span v-if="cursorVisible" class="code-cursor">▍</span></code>
                     </pre>
@@ -1361,8 +1375,15 @@ onBeforeUnmount(() => {
   flex: 1;
   min-width: 0;
   overflow: auto;
+  overscroll-behavior: contain;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
+}
+
+.code-block-typing {
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: pan-y;
 }
 
 /* Subtle, modern scroll bar for the live code snippet */
