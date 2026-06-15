@@ -6,4 +6,18 @@
   html {
     overflow-y: scroll;
   }
+
+  body {
+    @apply w-full min-w-0;
+  }
+}
+
+@layer components {
+  .page-shell {
+    @apply mx-auto w-full min-w-0 max-w-6xl;
+  }
+
+  .page-gutter {
+    @apply px-4 sm:px-6 lg:px-10;
+  }
 }

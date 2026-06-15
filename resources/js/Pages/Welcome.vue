@@ -344,7 +344,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div
-    class="relative min-h-screen overflow-hidden bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-50"
+    class="relative min-h-screen w-full overflow-x-hidden bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-50"
   >
     <!-- Glowing gradient orbs -->
     <div class="pointer-events-none absolute inset-0">
@@ -368,10 +368,10 @@ onBeforeUnmount(() => {
     ></div>
 
     <!-- Content -->
-    <div class="relative z-10 flex min-h-screen flex-col">
+    <div class="relative z-10 flex min-h-screen w-full min-w-0 flex-col">
       <!-- Top nav / badge -->
-<header class="px-4 pt-4 sm:px-10 sm:pt-5">
-  <div class="mx-auto w-full max-w-6xl pt-2.5">
+<header class="page-gutter pt-4 sm:pt-5">
+  <div class="page-shell pt-2.5">
     <!-- Mobile header: compact single row -->
     <div class="flex items-center justify-between gap-3 sm:hidden">
       <div class="flex min-w-0 flex-1 items-center gap-2.5">
@@ -466,14 +466,12 @@ onBeforeUnmount(() => {
 
 
       <!-- Main hero -->
-      <main
-        class="flex flex-1 items-center justify-center px-4 pb-10 pt-4 sm:px-10 sm:pt-8 lg:pb-14"
-      >
+      <main class="page-gutter w-full flex-1 pb-10 pt-4 sm:pt-8 lg:pb-14">
         <div
-          class="grid w-full max-w-6xl gap-10 items-center lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1.1fr)]"
+          class="page-shell grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1.1fr)] lg:items-center"
         >
           <!-- Left: headline and CTAs -->
-          <section class="space-y-6 sm:space-y-7">
+          <section class="w-full min-w-0 space-y-6 sm:space-y-7">
             <p
               class="flex w-full items-center justify-center gap-2 rounded-2xl border border-slate-300/80 bg-white/80 px-4 py-2.5 text-center text-[10px] uppercase leading-snug tracking-[0.12em] text-slate-600 shadow shadow-blue-500/10 sm:inline-flex sm:w-auto sm:rounded-full sm:px-3 sm:py-1 sm:text-[11px] sm:tracking-[0.18em] dark:border-slate-700/70 dark:bg-slate-900/70 dark:text-slate-300"
             >
@@ -488,7 +486,7 @@ onBeforeUnmount(() => {
                 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight text-slate-900 dark:text-slate-50"
               >
                 I build
-                <span class="relative whitespace-nowrap">
+                <span class="relative sm:whitespace-nowrap">
                   <span
                     class="relative z-10 bg-gradient-to-r from-emerald-500 via-cyan-400 to-blue-500 bg-clip-text text-transparent"
                   >
@@ -501,7 +499,7 @@ onBeforeUnmount(() => {
                 web and app experiences.
               </h1>
 
-              <p class="max-w-xl text-sm sm:text-base text-slate-600 dark:text-slate-300">
+              <p class="w-full text-sm sm:max-w-xl sm:text-base text-slate-600 dark:text-slate-300">
                 I build production software across the full stack with Laravel, Vue, React, React Native,
                 and modern PHP. My work combines strong MySQL, schema design, API development,
                 and legacy system modernization, including spaghetti code refactoring. I have built
@@ -717,7 +715,7 @@ onBeforeUnmount(() => {
           </section>
 
           <!-- Right: animated "project snapshot" cards + live code -->
-          <section class="relative">
+          <section class="relative w-full min-w-0">
             <!-- Halo glow -->
             <div
               class="pointer-events-none absolute -inset-10 rounded-[40px] bg-gradient-to-tr from-blue-500/10 via-emerald-500/5 to-cyan-500/10 blur-3xl dark:from-blue-500/20 dark:via-emerald-500/10 dark:to-cyan-500/20"
@@ -979,9 +977,9 @@ onBeforeUnmount(() => {
       <!-- How I Build Systems -->
       <section
         id="projects"
-        class="border-t border-slate-200/80 bg-slate-50/95 px-6 py-10 sm:px-10 sm:py-12 lg:py-14 dark:border-slate-800/80 dark:bg-slate-950/95"
+        class="page-gutter border-t border-slate-200/80 bg-slate-50/95 py-10 sm:py-12 lg:py-14 dark:border-slate-800/80 dark:bg-slate-950/95"
       >
-        <div class="mx-auto flex max-w-6xl flex-col gap-8">
+        <div class="page-shell flex flex-col gap-8">
           <header class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p class="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-500">
@@ -1082,12 +1080,12 @@ onBeforeUnmount(() => {
         id="about"
         ref="aboutSection"
         :class="[
-            'border-t border-slate-200/80 bg-slate-50 px-6 py-10 sm:px-10 sm:py-12 lg:py-14 dark:border-slate-800/80 dark:bg-slate-950',
+            'page-gutter border-t border-slate-200/80 bg-slate-50 py-10 sm:py-12 lg:py-14 dark:border-slate-800/80 dark:bg-slate-950',
             aboutHighlight ? 'about-highlight' : ''
         ]"
       >
 
-        <div class="mx-auto max-w-6xl space-y-8">
+        <div class="page-shell space-y-8">
           <header class="space-y-2">
             <p class="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-500">
               How I work
