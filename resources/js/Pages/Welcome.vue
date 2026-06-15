@@ -715,16 +715,16 @@ onBeforeUnmount(() => {
           </section>
 
           <!-- Right: animated "project snapshot" cards + live code -->
-          <section class="relative w-full min-w-0">
+          <section class="relative w-full min-w-0 overflow-x-clip">
             <!-- Halo glow -->
             <div
-              class="pointer-events-none absolute -inset-10 rounded-[40px] bg-gradient-to-tr from-blue-500/10 via-emerald-500/5 to-cyan-500/10 blur-3xl dark:from-blue-500/20 dark:via-emerald-500/10 dark:to-cyan-500/20"
+              class="pointer-events-none absolute -inset-4 rounded-[40px] bg-gradient-to-tr from-blue-500/10 via-emerald-500/5 to-cyan-500/10 blur-3xl sm:-inset-10 dark:from-blue-500/20 dark:via-emerald-500/10 dark:to-cyan-500/20"
             ></div>
 
-            <div class="relative grid gap-4 sm:gap-5">
+            <div class="relative grid w-full min-w-0 gap-4 sm:gap-5">
               <!-- Card 1 -->
               <article
-                class="card-enter-2 group relative overflow-hidden rounded-2xl border border-slate-200/90 
+                class="card-enter-2 group relative w-full min-w-0 overflow-hidden rounded-2xl border border-slate-200/90 
                       bg-gradient-to-br from-white via-slate-50 to-slate-100 p-4
                       shadow-2xl shadow-slate-200/80 transition-transform duration-300
                       hover:-translate-y-1.5 hover:border-emerald-400/70 hover:shadow-emerald-500/20
@@ -732,13 +732,13 @@ onBeforeUnmount(() => {
                       dark:via-slate-900 dark:to-slate-950 dark:shadow-slate-950/80 
                       dark:hover:shadow-emerald-500/20">
 
-                <div class="flex items-center justify-between gap-4">
-                  <h2 class="text-sm font-semibold text-slate-900 dark:text-slate-50">
+                <div class="flex min-w-0 flex-wrap items-start justify-between gap-2 sm:gap-4">
+                  <h2 class="min-w-0 text-sm font-semibold text-slate-900 dark:text-slate-50">
                     Incident Command Center
                   </h2>
 
                   <span
-                    class="inline-flex items-center gap-1 rounded-full bg-blue-500/10 px-2 py-0.5
+                    class="inline-flex shrink-0 items-center gap-1 rounded-full bg-blue-500/10 px-2 py-0.5
                           text-[10px] font-medium text-blue-600 dark:text-blue-300">
                     Portfolio access
                   </span>
@@ -767,26 +767,26 @@ onBeforeUnmount(() => {
 
                 <!-- subtle glow element -->
                 <div
-                  class="pointer-events-none absolute -left-10 bottom-0 h-24 w-24 
-                        bg-gradient-to-tr from-emerald-400/20 to-cyan-300/15 blur-2xl">
+                  class="pointer-events-none absolute -left-4 bottom-0 h-24 w-24 
+                        bg-gradient-to-tr from-emerald-400/20 to-cyan-300/15 blur-2xl sm:-left-10">
                 </div>
               </article>
 
 
               <!-- Card 2 -->
               <article
-                class="card-enter-2 group relative overflow-hidden rounded-2xl border border-slate-200/90 
+                class="card-enter-2 group relative w-full min-w-0 overflow-hidden rounded-2xl border border-slate-200/90 
                 bg-gradient-to-br from-white via-slate-50 to-slate-100 p-4 shadow-2xl shadow-slate-200/80 
                 transition-transform duration-300 hover:-translate-y-1.5 hover:border-blue-400/70 
                 hover:shadow-blue-500/20 dark:border-slate-800/90 dark:bg-gradient-to-br dark:from-slate-900 
                 dark:via-slate-900 dark:to-slate-950 dark:shadow-slate-950/80 dark:hover:shadow-emerald-500/20"
               >
-                <div class="flex items-center justify-between gap-4">
-                  <h2 class="text-sm font-semibold text-slate-900 dark:text-slate-50">
+                <div class="flex min-w-0 flex-wrap items-start justify-between gap-2 sm:gap-4">
+                  <h2 class="min-w-0 text-sm font-semibold text-slate-900 dark:text-slate-50">
                     TaskFlow
                   </h2>
                   <span
-                    class="inline-flex items-center gap-1 rounded-full bg-blue-500/10 px-2 py-0.5 text-[10px] font-medium text-blue-600 dark:text-blue-300"
+                    class="inline-flex shrink-0 items-center gap-1 rounded-full bg-blue-500/10 px-2 py-0.5 text-[10px] font-medium text-blue-600 dark:text-blue-300"
                   >
                     Portfolio access
                   </span>
@@ -814,23 +814,23 @@ onBeforeUnmount(() => {
                   </span>
                 </div>
                 <div
-                  class="pointer-events-none absolute -left-10 bottom-0 h-24 w-24 bg-gradient-to-tr from-blue-500/20 to-cyan-300/15 blur-2xl"
+                  class="pointer-events-none absolute -left-4 bottom-0 h-24 w-24 bg-gradient-to-tr from-blue-500/20 to-cyan-300/15 blur-2xl sm:-left-10"
                 ></div>
               </article>
 
               <!-- Card 3: quick stats -->
               <article
-                class="card-enter-3 relative flex flex-col gap-3 rounded-2xl border border-slate-200/90 
+                class="card-enter-3 relative flex w-full min-w-0 flex-col gap-3 overflow-hidden rounded-2xl border border-slate-200/90 
                 bg-white/90 p-4 shadow-2xl shadow-slate-200/80 backdrop-blur-lg dark:border-slate-800/90 
                 dark:bg-slate-900/80 dark:shadow-slate-950/80 dark:hover:shadow-emerald-500/20"
               >
-                <div class="flex items-center justify-between gap-4">
-                  <h2 class="text-sm font-semibold text-slate-900 dark:text-slate-50">
+                <div class="flex min-w-0 items-center justify-between gap-4">
+                  <h2 class="min-w-0 text-sm font-semibold text-slate-900 dark:text-slate-50">
                     What I bring to your team
                   </h2>
                 </div>
 
-                <div class="grid grid-cols-3 gap-3 text-center text-xs">
+                <div class="grid min-w-0 grid-cols-1 gap-3 text-center text-xs sm:grid-cols-3">
                   <div
                     class="rounded-xl border border-slate-200/80 bg-slate-50 px-2 py-3 dark:border-slate-800/80 dark:bg-slate-900"
                   >
@@ -873,14 +873,14 @@ onBeforeUnmount(() => {
                 id="wire-features"
                 ref="wireFeaturesCard"
                 :class="[
-                  'card-enter-4 group relative scroll-mt-24 overflow-visible rounded-2xl border bg-gradient-to-tr from-white via-slate-50 to-slate-100 p-4 shadow-2xl backdrop-blur-lg min-h-[260px] transition-all duration-500 ease-out hover:-translate-y-1.5 hover:border-emerald-400/70 hover:shadow-emerald-500/20 dark:bg-gradient-to-tr dark:from-slate-900 dark:via-slate-950 dark:to-slate-900 dark:shadow-slate-950/80 dark:hover:shadow-emerald-500/20',
+                  'card-enter-4 group relative w-full min-w-0 scroll-mt-24 overflow-hidden rounded-2xl border bg-gradient-to-tr from-white via-slate-50 to-slate-100 p-4 shadow-2xl backdrop-blur-lg min-h-[260px] transition-all duration-500 ease-out hover:-translate-y-1.5 hover:border-emerald-400/70 hover:shadow-emerald-500/20 dark:bg-gradient-to-tr dark:from-slate-900 dark:via-slate-950 dark:to-slate-900 dark:shadow-slate-950/80 dark:hover:shadow-emerald-500/20',
                   wireFeaturesHighlighted
                     ? '-translate-y-2.5 border-emerald-400/90 shadow-[0_25px_50px_-12px_rgba(16,185,129,0.5)] dark:border-emerald-400/80 dark:shadow-[0_25px_50px_-12px_rgba(16,185,129,0.4)]'
                     : 'border-slate-200/90 shadow-slate-200/80 dark:border-slate-800/90',
                 ]"
               >
                 <div
-                  class="pointer-events-none absolute -inset-1 rounded-[18px] transition-opacity duration-500"
+                  class="pointer-events-none absolute inset-0 rounded-2xl transition-opacity duration-500"
                   :class="wireFeaturesHighlighted ? 'opacity-100' : 'opacity-0'"
                   aria-hidden="true"
                 >
@@ -889,13 +889,13 @@ onBeforeUnmount(() => {
                   />
                 </div>
 
-                <div class="relative">
-                <div class="mb-3 flex items-center justify-between gap-4">
-                  <h2 class="text-sm font-semibold text-slate-900 dark:text-slate-50">
+                <div class="relative min-w-0">
+                <div class="mb-3 flex min-w-0 flex-wrap items-start justify-between gap-2 sm:gap-4">
+                  <h2 class="min-w-0 text-sm font-semibold text-slate-900 dark:text-slate-50">
                     How I wire features together
                   </h2>
                   <span
-                    class="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-700 dark:bg-slate-800/80 dark:text-slate-200"
+                    class="inline-flex shrink-0 items-center gap-1 rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-700 dark:bg-slate-800/80 dark:text-slate-200"
                   >
                     <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
                     Live snippet
@@ -903,7 +903,7 @@ onBeforeUnmount(() => {
                 </div>
 
                 <div
-                class="code-shell border border-slate-200 bg-slate-50 text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-50"
+                class="code-shell w-full min-w-0 max-w-full border border-slate-200 bg-slate-50 text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-50"
                 :style="{ height: `${codeShellHeight}px` }"
                 >
                     <div
@@ -920,7 +920,7 @@ onBeforeUnmount(() => {
                             </span>
                         </div>
                         <nav
-                          class="code-tab-nav flex flex-nowrap items-center justify-center gap-0.5 overflow-x-auto px-2 py-1.5 text-[9px] sm:text-[10px]"
+                          class="code-tab-nav flex min-w-0 flex-nowrap items-center justify-start gap-0.5 overflow-x-auto px-2 py-1.5 text-[9px] sm:justify-center sm:text-[10px]"
                           aria-label="Code snippet layers"
                         >
                           <template v-for="(tab, index) in codeTabs" :key="tab.id">
@@ -1286,6 +1286,9 @@ onBeforeUnmount(() => {
 
   display: flex;
   flex-direction: column;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
 }
 
 .code-shell-resize-handle {
@@ -1329,6 +1332,7 @@ onBeforeUnmount(() => {
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
+  min-width: 0;
 }
 
 .code-tab-nav {
@@ -1349,8 +1353,10 @@ onBeforeUnmount(() => {
   line-height: 1.4;
 
   flex: 1;
+  min-width: 0;
   overflow: auto;
   white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
 /* Subtle, modern scroll bar for the live code snippet */
