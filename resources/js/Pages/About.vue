@@ -92,7 +92,7 @@ import { Head, Link } from '@inertiajs/vue3';
             </p>
 
             <p class="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
-              In my recent roles I’ve worked on large, real-world operational systems, from a nationwide SaaS 
+              In my recent roles I’ve worked on large, real world operational systems, from a nationwide SaaS 
               warranty platform coordinating service providers across all 50 states to HVAC, electrical, plumbing, 
               and solar applications used daily by field teams. I’ve built and maintained the dispatch flows, 
               mobile tools, internal portals, and all the glue that connects them. I’ve shipped features under 
@@ -261,6 +261,135 @@ import { Head, Link } from '@inertiajs/vue3';
             </div>
           </section>
         </div>
+
+        <!-- Learning & exploration -->
+        <section class="about-fade-3 mx-auto mt-10 w-full max-w-6xl sm:mt-12">
+          <div class="relative">
+            <div
+              class="pointer-events-none absolute -inset-6 rounded-[32px] bg-gradient-to-tr from-violet-500/10 via-emerald-500/10 to-cyan-500/10 blur-2xl"
+            ></div>
+
+            <article
+              class="relative rounded-2xl border border-slate-200/80 bg-white/90 p-5 text-slate-800 shadow-2xl shadow-slate-200/80 backdrop-blur-lg transition-transform duration-300 hover:border-emerald-400/80 hover:shadow-emerald-500/30 dark:border-slate-700/70 dark:bg-slate-950/90 dark:text-slate-50 dark:shadow-slate-950/80 dark:hover:shadow-emerald-500/40 sm:p-6"
+            >
+              <div
+                class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
+              >
+                <h2 class="text-sm font-semibold text-slate-900 dark:text-slate-50">
+                  Growing beyond the day-to-day stack
+                </h2>
+                <span
+                  class="inline-flex w-fit items-center gap-1 rounded-full bg-violet-500/10 px-2 py-0.5 text-[10px] font-medium text-violet-700 dark:text-violet-300"
+                >
+                  Always learning
+                </span>
+              </div>
+
+              <p class="mt-3 text-xs leading-relaxed text-slate-600 dark:text-slate-300 sm:text-sm">
+                Most of my production work sits in JavaScript, PHP, and the tools that keep
+                operations running. I am also familiar with Python and spend personal time going
+                deeper into areas that stretch how I think about building software, from web
+                frameworks to machine learning and other ecosystems.
+              </p>
+
+              <div
+                class="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3"
+              >
+                <div
+                  class="rounded-xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-slate-700/70 dark:bg-slate-900/60"
+                >
+                  <div class="flex items-center gap-2">
+                    <span
+                      class="inline-flex h-6 w-6 flex-none items-center justify-center rounded-full bg-emerald-500/10 text-[10px] font-semibold text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300"
+                    >
+                      Py
+                    </span>
+                    <p class="text-xs font-medium text-slate-900 dark:text-slate-100">
+                      Python &amp; Django
+                    </p>
+                  </div>
+                  <p class="mt-2 text-[11px] leading-relaxed text-slate-600 dark:text-slate-300">
+                    Comfortable with Python fundamentals and actively learning more about the Django
+                    framework, its ORM patterns, and how it handles real-world web applications.
+                  </p>
+                </div>
+
+                <div
+                  class="rounded-xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-slate-700/70 dark:bg-slate-900/60"
+                >
+                  <div class="flex items-center gap-2">
+                    <span
+                      class="inline-flex h-6 w-6 flex-none items-center justify-center rounded-full bg-cyan-500/10 text-[10px] font-semibold text-cyan-700 dark:bg-cyan-500/20 dark:text-cyan-300"
+                    >
+                      ML
+                    </span>
+                    <p class="text-xs font-medium text-slate-900 dark:text-slate-100">
+                      PyTorch &amp; TensorFlow
+                    </p>
+                  </div>
+                  <p class="mt-2 text-[11px] leading-relaxed text-slate-600 dark:text-slate-300">
+                    Exploring both libraries on my own time, building intuition for model training,
+                    data pipelines, and when each framework fits best.
+                  </p>
+                </div>
+
+                <div
+                  class="rounded-xl border border-slate-200/80 bg-slate-50/80 p-4 sm:col-span-2 lg:col-span-1 dark:border-slate-700/70 dark:bg-slate-900/60"
+                >
+                  <div class="flex items-center gap-2">
+                    <span
+                      class="inline-flex h-6 w-6 flex-none items-center justify-center rounded-full bg-indigo-500/10 text-[10px] font-semibold text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-300"
+                    >
+                      .NET
+                    </span>
+                    <p class="text-xs font-medium text-slate-900 dark:text-slate-100">
+                      C# &amp; .NET
+                    </p>
+                  </div>
+                  <p class="mt-2 text-[11px] leading-relaxed text-slate-600 dark:text-slate-300">
+                    Interested in going deeper with C# and the .NET ecosystem, from backend services
+                    to the tooling and patterns that power enterprise-grade applications.
+                  </p>
+                </div>
+              </div>
+
+              <div
+                class="mt-4 flex flex-wrap gap-2 text-[11px] text-slate-600 dark:text-slate-300"
+              >
+                <span
+                  class="rounded-full border border-slate-300/80 bg-white/80 px-3 py-1 dark:border-slate-700/80 dark:bg-slate-900/80"
+                >
+                  Python
+                </span>
+                <span
+                  class="rounded-full border border-slate-300/80 bg-white/80 px-3 py-1 dark:border-slate-700/80 dark:bg-slate-900/80"
+                >
+                  Django
+                </span>
+                <span
+                  class="rounded-full border border-slate-300/80 bg-white/80 px-3 py-1 dark:border-slate-700/80 dark:bg-slate-900/80"
+                >
+                  PyTorch
+                </span>
+                <span
+                  class="rounded-full border border-slate-300/80 bg-white/80 px-3 py-1 dark:border-slate-700/80 dark:bg-slate-900/80"
+                >
+                  TensorFlow
+                </span>
+                <span
+                  class="rounded-full border border-slate-300/80 bg-white/80 px-3 py-1 dark:border-slate-700/80 dark:bg-slate-900/80"
+                >
+                  C#
+                </span>
+                <span
+                  class="rounded-full border border-slate-300/80 bg-white/80 px-3 py-1 dark:border-slate-700/80 dark:bg-slate-900/80"
+                >
+                  .NET
+                </span>
+              </div>
+            </article>
+          </div>
+        </section>
       </main>
     </div>
   </div>
