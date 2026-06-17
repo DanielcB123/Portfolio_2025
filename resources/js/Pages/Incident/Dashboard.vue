@@ -876,7 +876,7 @@ function selectIncident(id) {
             </span>
           </div>
 
-          <div class="space-y-2 overflow-y-auto max-h-[565px] pr-1 scroll-thin">
+          <div class="space-y-2 overflow-y-auto max-h-[565px] p-1 -m-1 scroll-thin">
             <button
               v-for="incident in filteredIncidents"
               :key="incident.id"
